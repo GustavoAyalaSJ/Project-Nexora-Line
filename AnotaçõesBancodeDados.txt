@@ -1,0 +1,5 @@
+O que fazer quando adicionar banco de dados ao Nexora:
+
+- Fazer que o painel de postagem de vagas seja apenas para admin ou empresas;
+- Fazer o site detectar mudanças após a integração de um perfil de um candidato ou empresa;
+- Possibilidade de mandar projetos para o site (como candidato);
