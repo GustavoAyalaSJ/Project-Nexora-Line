@@ -12,9 +12,11 @@
 <body>
     <div class="background-container">
         <header class="cabeçalho">
-            <div class="logotipo">
-                <img src="Assets/Nexora-PurpleLight.png" alt="Nexora logo">
-            </div>
+            <a href="EmpresaPage.html" class="logo-link">
+                <div class="logotipo">
+                    <img src="Assets/Nexora-PurpleLight.png" alt="Nexora logo">
+                </div>
+            </a>
             <nav class="nav-menu">
                 <a href="GerenciamentoVagas.html">
                     <button class="nav-button" id="vagas-button">GERENCIAR VAGAS</button>
@@ -24,16 +26,15 @@
 
             </div>
         </header>
+        <main class="main-content">
+            <h1 class="messageGerenciamento">Gerenciamento de vagas da sua empresa</h1>
+            <div id="root">
+                <!-- Quadrado para adicionar a vagas igual a versão de teste da VagasPage.html -->
+                <!-- Quadro mostrando as vagas que você publicou mostrando o tempo que está ativa e um botão para tirar ela (deixando ela permanente nesta área) -->
+                <!-- A ação de postar vagas irá atualizar automáticamente nas VagasPage.html -->
+            </div>
+        </main>
     </div>
-
-    <main class="main-content">
-        <h1 class="messageWelcome">Gerenciamento de vagas da sua empresa</h1>
-        <div id="root">
-            <!-- Quadrado para adicionar a vagas igual a versão de teste da VagasPage.html -->
-            <!-- Quadro mostrando as vagas que você publicou mostrando o tempo que está ativa e um botão para tirar ela (deixando ela permanente nesta área) -->
-            <!-- A ação de postar vagas irá atualizar automáticamente nas VagasPage.html -->
-        </div>
-    </main>
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
