@@ -49,7 +49,7 @@ function UserActions() {
 
       {dropdownAberto === 'profile-button' && (
         <div ref={dropdownRef} className="dropdown-content" id="profile-dropdown">
-          <a href="PerfilPage.html" className="settings-link"><i className="bi bi-person-badge"></i>Perfil</a>
+          <a href="PerfilUserPage.html" className="settings-link"><i className="bi bi-person-badge"></i>Perfil</a>
           <a href="#" className="settings-link"><i className="bi bi-gear"></i> Configurações</a>
           <a href="IntroducedPage.html"><i className="bi bi-box-arrow-left"></i> Sair</a>
           <button onClick={handleFecharDropdown} className="close-dropdown">Fechar</button>

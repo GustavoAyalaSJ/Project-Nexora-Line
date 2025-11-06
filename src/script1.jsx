@@ -1,6 +1,6 @@
 alert('Atenção caro usuário!'); 
 alert('Você está acessando um site de um protótipo acadêmico desenvolvido apenas para fins de demonstração, não está 100% completo.');
-alert('Obrigado pela atenção');
+alert('Obrigado pela atenção!');
 
 function HeaderLinks() {
   const [modalAberto, setModalAberto] = React.useState(null);
@@ -115,7 +115,11 @@ function ModaisNexora() {
                     </div>
                     <form onSubmit={(e) => {
                         e.preventDefault();
+                        if (papelSelecionado === 'candidato'){
                         window.location.href = "UserPage.html";
+                        } else if (papelSelecionado === 'empresa') {
+                        window.location.href = "EmpresaPage.html";        
+                        }
                     }}>
                         <label>Email:</label>
                         <input type="email" placeholder="Digite seu email" />

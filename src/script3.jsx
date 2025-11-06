@@ -50,7 +50,7 @@ function UserActions() {
 
             {dropdownAberto === 'profile-button' && (
                 <div ref={dropdownRef} className="dropdown-content" id="profile-dropdown">
-                    <a href="PerfilPage.html" className="settings-link"><i className="bi bi-person-badge"></i>Perfil</a>
+                    <a href="PerfilUserPage.html" className="settings-link"><i className="bi bi-person-badge"></i>Perfil</a>
                     <a href="#" className="settings-link"><i className="bi bi-gear"></i> Configurações</a>
                     <a href="IntroducedPage.html"><i className="bi bi-box-arrow-left"></i> Sair</a>
                     <button onClick={handleFecharDropdown} className="close-dropdown">Fechar</button>
@@ -90,15 +90,20 @@ const ESTADOS_DATA = [
     { nome: "Tocantins", sigla: "TO", municipios: ["Palmas", "Araguaína"] }
 ];
 
-// --- MODIFICADO: Adicionado 'onAbrirModalContato' ---
 function DetalhesVaga({ vaga, onAbrirModalContato }) {
+
+    const savedLogoSrc = localStorage.getItem('companyLogoDataURL');
+    const logoToDisplay = savedLogoSrc || vaga?.logo;
+
     if (!vaga) {
         return (
             <aside className="detalhes-container placeholder">
                 <h2>MAIS INFORMAÇÕES</h2>
                 <div className="detalhes-empresa">
-                    {/* CORRIGIDO: O LOGO veio primeiro */}
-                    <div className="detalhes-logo logo-placeholder">LOGO</div> 
+                    <img src={savedLogoSrc} alt="Logo da Empresa" className="detalhes-logo" />
+                    ) : (
+                    <div className="detalhes-logo logo-placeholder">LOGO</div>
+                    )
                     <h3>NOME DA EMPRESA</h3>
                 </div>
                 <div className="detalhes-info">
@@ -116,7 +121,11 @@ function DetalhesVaga({ vaga, onAbrirModalContato }) {
         <aside className="detalhes-container">
             <h2>MAIS INFORMAÇÕES</h2>
             <div className="detalhes-empresa">
-                <img src={vaga.logo} alt={`Logo ${vaga.company}`} className="detalhes-logo" />
+                <img
+                    src={logoToDisplay || ''}
+                    alt={`Logo ${vaga.company}`}
+                    className="detalhes-logo"
+                />
                 <h3>{vaga.company}</h3>
             </div>
             <div className="detalhes-info">
@@ -136,7 +145,6 @@ function DetalhesVaga({ vaga, onAbrirModalContato }) {
     );
 }
 
-// --- MODIFICADO: Lógica de favoritos (localStorage) adicionada ---
 function CardVaga({ vaga, estaAtiva, aoClicar }) {
     const className = `card-vaga ${estaAtiva ? 'active' : ''}`;
 
@@ -154,10 +162,8 @@ function CardVaga({ vaga, estaAtiva, aoClicar }) {
         let novosFavoritos;
 
         if (isFavorito) {
-            // JÁ É FAVORITO (Remover)
             novosFavoritos = favoritos.filter(fav => fav.id !== vaga.id);
         } else {
-            // NÃO É FAVORITO (Adicionar)
             const vagaInfo = {
                 id: vaga.id,
                 title: vaga.title,
@@ -169,10 +175,8 @@ function CardVaga({ vaga, estaAtiva, aoClicar }) {
             novosFavoritos = [vagaInfo, ...favoritos];
         }
 
-        // Salva a nova lista no localStorage
         localStorage.setItem('nexoraFavoritos', JSON.stringify(novosFavoritos));
 
-        // Atualiza o ícone do coração (estado local)
         setIsFavorito(!isFavorito);
     };
 
@@ -192,9 +196,32 @@ function CardVaga({ vaga, estaAtiva, aoClicar }) {
     );
 }
 
-function PaginaDeVagas() {
+const loadVagasFromStorage = () => {
+    try {
+        const stored = localStorage.getItem('nexoraVagas');
+        return stored ? JSON.parse(stored) : [];
+    } catch (error) {
+        console.error("Erro ao carregar vagas na PaginaDeVagas:", error);
+        return [];
+    }
+};
 
-    const [vagas, setVagas] = React.useState([]);
+function PaginaDeVagas() {
+    const [vagas, setVagas] = React.useState(loadVagasFromStorage);
+
+    React.useEffect(() => {
+        setVagas(loadVagasFromStorage());
+        const handleStorageChange = (e) => {
+            if (e.key === 'nexoraVagas') {
+                setVagas(loadVagasFromStorage());
+            }
+        };
+        window.addEventListener('storage', handleStorageChange);
+        return () => {
+            window.removeEventListener('storage', handleStorageChange);
+        };
+    }, []);
+
 
     const [filtros, setFiltros] = React.useState({
         estado: 'todos',
@@ -204,21 +231,9 @@ function PaginaDeVagas() {
 
     const [vagaSelecionadaId, setVagaSelecionadaId] = React.useState(null);
 
-    const estadoInicialForm = {
-        company: '',
-        title: '',
-        city: '',
-        state: '',
-        period: '',
-        serviceType: 'Remoto',
-        level: 'junior',
-        logo: null
-    };
-    const [formNovaVaga, setFormNovaVaga] = React.useState(estadoInicialForm);
 
     const [modalContatoAberto, setModalContatoAberto] = React.useState(false);
 
-    const [logoPreview, setLogoPreview] = React.useState(null);
 
     const municipiosParaFiltro = React.useMemo(() => {
         if (filtros.estado === 'todos') return [];
@@ -226,11 +241,6 @@ function PaginaDeVagas() {
         return estadoObj ? estadoObj.municipios : [];
     }, [filtros.estado]);
 
-    const municipiosParaForm = React.useMemo(() => {
-        if (!formNovaVaga.state) return [];
-        const estadoObj = ESTADOS_DATA.find(e => e.sigla === formNovaVaga.state);
-        return estadoObj ? estadoObj.municipios : [];
-    }, [formNovaVaga.state]);
 
     const vagasFiltradas = React.useMemo(() => {
         return vagas.filter(vaga => {
@@ -270,120 +280,12 @@ function PaginaDeVagas() {
         setVagaSelecionadaId(id);
     }
 
-    function handleFormChange(e) {
-        if (e.target.type === 'file' && e.target.name === 'logo') {
-            const file = e.target.files[0];
-            if (!file) {
-                return;
-            }
-
-            if (logoPreview) {
-                URL.revokeObjectURL(logoPreview);
-            }
-
-            setLogoPreview(URL.createObjectURL(file));
-
-            setFormNovaVaga(formAnterior => ({
-                ...formAnterior,
-                logo: file
-            }));
-
-        } else {
-            const { name, value } = e.target;
-            setFormNovaVaga(formAnterior => {
-                const novoForm = {
-                    ...formAnterior,
-                    [name]: value
-                };
-                if (name === 'state') {
-                    novoForm.city = '';
-                }
-                return novoForm;
-            });
-        }
-    }
-
-    function handleSubmitNovaVaga(e) {
-        e.preventDefault();
-
-        if (!formNovaVaga.title || !formNovaVaga.company || !formNovaVaga.state || !formNovaVaga.city) {
-            alert('Preencha pelo menos Título, Empresa, Estado e Município.');
-            return;
-        }
-
-        const novaVaga = {
-            ...formNovaVaga,
-            id: Date.now(),
-            logo: logoPreview || 'AssetsLogoEmpresas/Logo-Default.png'
-        };
-
-        setVagas(vagasAnteriores => [novaVaga, ...vagasAnteriores]);
-        setFormNovaVaga(estadoInicialForm);
-
-        if (logoPreview) {
-            URL.revokeObjectURL(logoPreview);
-        }
-        setLogoPreview(null);
-
-        alert('Vaga adicionada com sucesso!');
-    }
 
     const handleAbrirContato = () => setModalContatoAberto(true);
     const handleFecharContato = () => setModalContatoAberto(false);
 
     return (
         <React.Fragment>
-
-            <form onSubmit={handleSubmitNovaVaga} className="form-nova-vaga">
-                <h3>Adicionar Vaga (Teste)</h3>
-                <input name="title" value={formNovaVaga.title} onChange={handleFormChange} placeholder="Título da Vaga" required />
-                <input name="company" value={formNovaVaga.company} onChange={handleFormChange} placeholder="Empresa" required />
-                <div className="logo-upload-section">
-                    <label htmlFor="logo-upload-input" className="logo-upload-label">
-                        {logoPreview ? "Trocar Logo" : "Adicionar Logo"}
-                    </label>
-                    <input
-                        id="logo-upload-input"
-                        type="file"
-                        name="logo"
-                        accept="image/png, image/jpeg, image/webp"
-                        onChange={handleFormChange}
-                        style={{ display: 'none' }}
-                    />
-                    {logoPreview && (
-                        <img src={logoPreview} alt="Prévia do logo" className="logo-preview" />
-                    )}
-                </div>
-                <input name="period" value={formNovaVaga.period} onChange={handleFormChange} placeholder="Período (ex: 8h/dia)" />
-
-                <select name="state" value={formNovaVaga.state} onChange={handleFormChange} required>
-                    <option value="">Selecione o Estado</option>
-                    {ESTADOS_DATA.map(e => (
-                        <option key={e.sigla} value={e.sigla}>{e.nome}</option>
-                    ))}
-                </select>
-
-                <select name="city" value={formNovaVaga.city} onChange={handleFormChange} disabled={!formNovaVaga.state} required>
-                    <option value="">Selecione o Município</option>
-                    {municipiosParaForm.map(m => (
-                        <option key={m} value={m}>{m}</option>
-                    ))}
-                </select>
-
-                <select name="level" value={formNovaVaga.level} onChange={handleFormChange}>
-                    <option value="junior">Júnior</option>
-                    <option value="pleno">Pleno</option>
-                    <option value="senior">Sênior</option>
-                </select>
-
-                <select name="serviceType" value={formNovaVaga.serviceType} onChange={handleFormChange}>
-                    <option value="Remoto">Remoto</option>
-                    <option value="Híbrido">Híbrido</option>
-                    <option value="Presencial">Presencial</option>
-                </select>
-
-                <button type="submit">Adicionar Vaga</button>
-            </form>
 
             <div className="vagas-pagina-container">
 
@@ -428,7 +330,7 @@ function PaginaDeVagas() {
                     </section>
 
                     <DetalhesVaga
-                        E-mail vaga={vagaAtiva}
+                        vaga={vagaAtiva}
                         onAbrirModalContato={handleAbrirContato}
                     />
 
