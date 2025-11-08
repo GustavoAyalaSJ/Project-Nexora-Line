@@ -22,5 +22,5 @@ Nexora Line (Originalmente Atlas Developers) é um projeto para criação de um 
 • Adição de páginas exclusivas para empresas (EmpresaPage, GerenciamentodeVagas e PerfilEmpresa);
 • Melhoria no CSS da página IntroducedPage e VagasPage (Candidato);
 • Modernização na tela de login e cadastro;
-• Algumas pequenas modificações em Modais;
+• Algumas pequenas modificações em Modais.
 
