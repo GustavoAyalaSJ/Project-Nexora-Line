@@ -28,9 +28,15 @@ const ESTADOS_DATA = [
     { nome: "Tocantins", sigla: "TO", municipios: ["Palmas", "Araguaína"] }
 ];
 
-function VagaPublicadaCard({ vaga, onSelectVaga, isSelected }) {
+function VagaPublicadaCard({ vaga, onSelectVaga, isSelected, onRemove }) {
     const className = `vaga-card ${isSelected ? 'selected' : ''}`;
     const statusClass = `status-${vaga.status.toLowerCase()}`;
+
+    const handleRemoverClick = (e) => {
+        e.stopPropagation();
+        const confirmacao = window.confirm(`Deseja realmente remover a vaga: "${vaga.title}"?`);
+        if (confirmacao) onRemove(vaga.id);
+    };
 
     return (
         <article className={className} onClick={() => onSelectVaga(vaga.id)}>
@@ -42,14 +48,9 @@ function VagaPublicadaCard({ vaga, onSelectVaga, isSelected }) {
             </div>
 
             <button
+                type="button"
                 className="delete-vaga-btn"
-                onClick={(e) => {
-                    e.stopPropagation();
-                    console.log("Clique na lixeira detectado para a vaga ID:", vaga.id);
-                    if (window.confirm(`Tem certeza que deseja remover a vaga: ${vaga.title}?`)) {
-                        onRemove(vaga.id);
-                    }
-                }}
+                onClick={handleRemoverClick}
             >
                 <i className="bi bi-trash"></i>
             </button>
@@ -75,7 +76,6 @@ function DisplayVaga({ vaga }) {
     );
 }
 
-// Função auxiliar para obter vagas do localStorage
 const getStoredVagas = () => {
     try {
         const stored = localStorage.getItem('nexoraVagas');
@@ -86,7 +86,6 @@ const getStoredVagas = () => {
     }
 };
 
-// Função auxiliar para salvar vagas no localStorage
 const saveVagasToStorage = (vagas) => {
     try {
         localStorage.setItem('nexoraVagas', JSON.stringify(vagas));
@@ -311,16 +310,23 @@ function GerenciamentoVagas() {
         alert(`Vaga "${novaVaga.title}" publicada com sucesso! (ID: ${novaVaga.id})`);
     };
 
-    const handleRemoverVaga = (id) => {
-        const novasVagas = vagasPublicadas.filter(v => v.id !== id);
-        setVagasPublicadas(novasVagas);
-        saveVagasToStorage(novasVagas);
+    const handleRemoverVaga = (vagaId) => {
+        setVagasPublicadas((vagasAtuais) => {
+            const novasVagas = vagasAtuais.filter(v => v.id !== vagaId);
+            localStorage.setItem('vagasPublicadas', JSON.stringify(novasVagas));
+            return novasVagas;
+        });
 
-        if (selectedVagaId === id) {
+        if (selectedVagaId === vagaId) {
             setSelectedVagaId(null);
-            setViewMode('list');
         }
     };
+
+    React.useEffect(() => {
+        const vagasSalvas = JSON.parse(localStorage.getItem('vagasPublicadas')) || [];
+        setVagasPublicadas(vagasSalvas);
+    }, []);
+
 
 
     const vagaAtiva = React.useMemo(() => {
