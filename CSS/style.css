@@ -1,4 +1,5 @@
-/* ESTILOS GLOBAIS E LAYOUT */
+/* ESTILOS GLOBAIS E LAYOUT DE BASE  */
+
 * {
   margin: 0;
   padding: 0;
@@ -6,7 +7,8 @@
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   width: 100%;
   overflow-x: hidden;
@@ -18,10 +20,15 @@ html, body {
   flex-direction: column;
   min-height: 100vh;
   width: 100%;
+  transition: filter 0.3s ease-in-out;
+}
+
+.background-container.blurred {
+  filter: blur(8px);
 }
 
 /* Cabeçalho */
-.cabeçalho {
+.cabecalho {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -29,10 +36,12 @@ html, body {
   background-color: #000000;
   color: white;
   flex-shrink: 0;
+  position: relative;
+  z-index: 10;
 }
 
 .logotipo img {
-  height: 40px; 
+  height: 40px;
   width: auto;
 }
 
@@ -44,8 +53,8 @@ html, body {
   font-size: 1rem;
 }
 
-.header-links a:hover{
-  color:#a49aff;
+.header-links a:hover {
+  color: #a49aff;
   transition: color 0.3s;
 }
 
@@ -65,59 +74,11 @@ html, body {
 .container-left {
   width: 50%;
   background:
-  linear-gradient(90deg,rgb(21, 18, 85) 35%, rgba(95, 95, 153, 1) 100%),
-  url('FundoLeftGlobal.png');
+    linear-gradient(90deg, rgb(21, 18, 85) 35%, rgba(95, 95, 153, 1) 100%),
+    url('FundoLeftGlobal.png');
   color: white;
   padding: 60px;
   position: relative;
-}
-
-.nexora{
-  color: #e9e9e9;
-}
-
-.line{
-  color:#e4dcfff3;
-    text-shadow:
-    0 0 7px #463a69ba,
-    0 0 10px #463a69ba,
-    0 0 21px #463a69ba,
-    0 0 42px #d4c5ffba,
-    0 0 82px #dbcfffba,
-    0 0 92px #bdaceeba;
-}
-
-/* Coluna da Direita */
-#react-containerImage-right {
-  width: 50%;
-  background-image: url('FundoGlobal.png');
-    background-size: cover;
-  background-repeat: no-repeat;
-  background-color: #5a68e7;
-  /*color: white;*/ /* Tire caso não tenha imagem.*/
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 2.5rem;
-  font-weight: bold;
-  text-align: center;
-  padding: 20px;
-  position: relative;
-}
-
-/* Placeholder de Imagem Right - Tire o comentário caso, não tenha imagem*/
-/*#react-containerImage-right::before {
-  content: '*DISPLAY DE IMAGEM*';
-}*/
-
-/* 1.3 Rodapé */
-.rodape {
-  padding: 25px;
-  text-align: center;
-  background-color: #000000;
-  color: rgba(164, 139, 255, 0.849);
-  flex-shrink: 0;
-  font-size: 0.9rem;
 }
 
 .left h1 {
@@ -137,6 +98,53 @@ html, body {
   line-height: 1.6;
   max-width: 600px;
 }
+
+.nexora {
+  color: #e9e9e9;
+}
+
+.line {
+  color: #e4dcfff3;
+  text-shadow:
+    0 0 7px #463a69ba,
+    0 0 10px #463a69ba,
+    0 0 21px #463a69ba,
+    0 0 42px #d4c5ffba,
+    0 0 82px #dbcfffba,
+    0 0 92px #bdaceeba;
+}
+
+/* Coluna da Direita */
+#react-containerImage-right {
+  width: 50%;
+  background-image: url('FundoGlobal.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  min-height: 400px;
+  background-color: #5a68e7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  text-align: center;
+  padding: 20px;
+  position: relative;
+}
+
+/* Rodapé  */
+.rodape {
+  padding: 25px;
+  text-align: center;
+  background-color: #000000;
+  color: rgba(164, 139, 255, 0.849);
+  flex-shrink: 0;
+  font-size: 0.9rem;
+  position: relative;
+  z-index: 10;
+}
+
+/* COMPONENTES E ESTILOS DE MODAIS */
 
 .btn-landing {
   display: inline-block;
@@ -162,7 +170,7 @@ html, body {
     inset 0 0 32px #736797c2;
 }
 
-/* --- Modal de Seleção --- */
+/* Modal de Seleção (Candidato/Empresa) */
 #react-form-label {
   position: absolute;
   top: 0;
@@ -177,29 +185,35 @@ html, body {
 }
 
 .modal-card {
-  background-color: #FFFFFF;
-  color: #000;
+  position: fixed;
+  top: 50%;
+  left: 75%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  color: #fff;
   padding: 40px;
   border-radius: 15px;
-  border: 4px solid #3B5998;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   text-align: center;
   width: 100%;
   max-width: 400px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
   pointer-events: auto;
+  z-index: 100;
 }
 
 .modal-card h2 {
   font-size: 1.5rem;
   margin-bottom: 25px;
-  color: #333;
+  color: #fff;
 }
 
 .modal-card p {
   font-size: 1.2rem;
   font-weight: bold;
   margin: 20px 0;
-  color:#000;
+  color: #fff;
 }
 
 .modal-card a {
@@ -213,49 +227,54 @@ html, body {
   transition: all 0.3s ease;
 }
 
-/* Botão EMPRESA */
 .role-empresa {
   background-color: #FFFFFF;
   color: #000000;
   border: 3px solid #301934;
 }
-.role-empresa:hover, .role-empresa.selected {
+
+.role-empresa:hover,
+.role-empresa.selected {
   background-color: #7b5bac;
   color: #FFFFFF;
   border-color: #1c0f1f;
 }
 
-/* Botão CANDIDATO */
 .role-candidato {
   background-color: #FFFFFF;
   color: #000000;
   border: 3px solid #2b3c54;
 }
-.role-candidato:hover, .role-candidato.selected {
+
+.role-candidato:hover,
+.role-candidato.selected {
   background-color: #5A6B80;
   color: #FFFFFF;
   border-color: #2b3c54;
 }
 
-/* --- Modal de Login  --- */
+/* Modais de Login / Cadastro (Transparentes) */
 
 .login-card {
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 75%;
   transform: translate(-50%, -50%);
   width: 90%;
-  max-width: 450px; 
-  background-color: #FFFFFF;
-  color: #000;
+  max-width: 450px;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  color: #fff;
   padding: 30px 35px;
   border-radius: 15px;
-  border: 4px solid #3B5998;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-  z-index: 10;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  z-index: 100;
+  max-height: 95vh;
+  overflow-y: auto;
 }
 
-.login-card > button:first-of-type {
+.login-card>button:first-of-type {
   position: absolute;
   top: 10px;
   right: 15px;
@@ -264,25 +283,28 @@ html, body {
   font-size: 1.7rem;
   font-weight: bold;
   cursor: pointer;
-  color: #aaa;
+  color: #eee;
   transition: color 0.2s;
 }
-.login-card > button:first-of-type:hover {
-  color: #333;
+
+.login-card>button:first-of-type:hover {
+  color: #fff;
 }
 
-.login-card > p:first-of-type {
+.login-card>p:first-of-type {
   font-size: 1.1rem;
   margin-bottom: 15px;
-  color: #333;
+  color: #eee;
   font-weight: 500;
 }
-.login-card > p:first-of-type strong {
+
+.login-card>p:first-of-type strong {
   color: #28A745;
   text-transform: uppercase;
 }
 
- /* --- Caixa de Aviso --- */
+
+/* Caixa de Aviso (Warning Box) */
 .warning-box {
   background-color: #FFF3CD;
   border: 1px solid #FFEEBA;
@@ -303,7 +325,7 @@ html, body {
   color: #f0ad4e;
 }
 
-/* --- Formulário de Login --- */
+/* Formulário nos Modais Transparentes */
 .login-card form {
   display: flex;
   flex-direction: column;
@@ -312,10 +334,11 @@ html, body {
 .login-card form label {
   font-size: 1rem;
   font-weight: bold;
-  color: #333;
+  color: #bba8ff;
   margin-bottom: 5px;
   margin-top: 10px;
 }
+
 .login-card form label:first-of-type {
   margin-top: 0;
 }
@@ -325,10 +348,16 @@ html, body {
 .login-card form input[type="text"] {
   width: 100%;
   padding: 12px 15px;
-  border: 1px solid #ccc;
-  background-color: #EEEEEE;
+  border: 1px solid transparent;
+  background-color: rgba(255, 255, 255, 0.85);
+  color: #222;
   border-radius: 8px;
   font-size: 1rem;
+}
+
+.login-card form input:focus {
+  border-color: #a079ff;
+  box-shadow: 0 0 5px #a079ff;
 }
 
 .login-card form div {
@@ -349,11 +378,12 @@ html, body {
   cursor: pointer;
   color: #555;
   user-select: none;
+  z-index: 2;
 }
 
 .login-card form a {
   font-size: 0.9rem;
-  color: #007BFF;
+  color: #89c4ff;
   text-decoration: none;
   text-align: right;
   margin-top: 5px;
@@ -371,47 +401,82 @@ html, body {
   cursor: pointer;
   margin-top: 20px;
   transition: all 0.3s ease;
+  border: none;
 }
 
 .login-card form button[type="submit"] {
-  background-color: #FFFFFF;
-  border: 2px solid #007BFF;
-  color: #007BFF;
+  background-color: #7848f3;
+  color: #fff;
 }
 
 .login-card form button[type="submit"]:hover {
-  background-color: #e6f2ff;
+  background-color: #a079ff;
 }
 
 .login-card form button[type="button"] {
-  background-color: #FFFFFF;
-  border: 2px solid #007BFF;
-  color: #007BFF;
+  background-color: transparent;
+  border: 2px solid #a079ff;
+  color: #a079ff;
   margin-top: 10px;
 }
 
 .login-card form button[type="button"]:hover {
-  background-color: #e6f2ff;
+  background-color: rgba(160, 121, 255, 0.2);
 }
 
 .login-card form p {
   font-size: 0.8rem;
-  color: #555;
+  color: #ddd;
   margin-top: 20px;
   text-align: center;
   line-height: 1.4;
 }
+
 .login-card form p a {
   font-weight: bold;
-  color: #007BFF;
+  color: #89c4ff;
   text-decoration: underline;
   cursor: pointer;
   text-align: center;
   margin: 0;
 }
 
-/* --- Modais (Header Links) --- */
-.modal {
+.linha-dupla {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  width: 100%;
+}
+
+.linha-dupla>div {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.tenhoConta {
+  padding-bottom: 4px;
+  display: block;
+  text-align: center;
+}
+
+.tenhoConta:hover {
+  cursor: pointer;
+  text-align: center;
+  display: block;
+  padding-top: 4px;
+  color: rgb(102, 185, 102);
+}
+
+.FinalizarCadastro {
+  margin-bottom: 4px;
+  padding-bottom: 5px;
+}
+
+
+/*  Modais (Brancos - Termos, Suporte) */
+.modal,
+.modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -422,10 +487,11 @@ html, body {
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  /* Acima de tudo */
   padding: 20px;
 }
 
-label{
+label {
   color: black;
 }
 
@@ -438,20 +504,7 @@ label{
   position: relative;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-}
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
 .modal-content h2 {
@@ -463,8 +516,7 @@ label{
   color: #000000;
 }
 
-
-.modal-content > button:first-of-type {
+.modal-content>button:first-of-type {
   position: absolute;
   top: 10px;
   right: 15px;
@@ -476,7 +528,7 @@ label{
   color: #aaa;
 }
 
-.modal-content > button:first-of-type:hover {
+.modal-content>button:first-of-type:hover {
   color: #333;
 }
 
@@ -535,22 +587,26 @@ label{
   color: black;
 }
 
-/* --- Media Queries --- */
+/* MEDIA QUERIES (Responsividade) */
 
 @media (max-width: 1600px) {
-  .container-left, #react-containerImage-right {
+
+  .container-left,
+  #react-containerImage-right {
     padding: 50px;
   }
+
   .left h1 {
     font-size: 2.8rem;
   }
+
   .left p {
     font-size: 1.05rem;
   }
 }
 
 @media (max-width: 1366px) {
-  .cabeçalho {
+  .cabecalho {
     padding: 15px 30px;
   }
 
@@ -578,27 +634,29 @@ label{
     padding: 12px 35px;
   }
 
-  .login-card {
+  .login-card,
+  .modal-card {
     left: 72%;
-    max-width: 420px;
-    padding: 25px 30px;
+    transform: translate(-50%, -50%);
   }
 }
 
 @media (max-width: 1024px) {
-.main-content {
+  .main-content {
     flex-direction: column;
   }
 
   .container-left,
   #react-containerImage-right {
     width: 100%;
-    height: auto;
+    min-height: auto;
   }
 
   .container-left {
     padding: 40px 50px;
     text-align: center;
+    background-size: cover;
+    background-position: center;
   }
 
   .left h1 {
@@ -618,19 +676,10 @@ label{
   .btn-landing {
     padding: 12px 30px;
   }
-
-  .login-card {
-    position: static;
-    transform: none;
-    margin: 40px auto;
-    left: auto;
-    width: 90%;
-    max-width: 400px;
-  }
 }
 
 @media (max-width: 768px) {
-  .cabeçalho {
+  .cabecalho {
     flex-direction: column;
     text-align: center;
     gap: 10px;
@@ -664,10 +713,18 @@ label{
 
   #react-containerImage-right {
     padding: 20px;
-    background-size: contain;
+    background-size: center;
+    min-height: 300px;
   }
 
-  .modal-card, .login-card, .modal-content {
+  .modal-card,
+  .login-card {
+    left: 50%;
+  }
+
+  .modal-card,
+  .login-card,
+  .modal-content {
     width: 90%;
     padding: 20px;
     font-size: 0.9rem;
@@ -676,10 +733,35 @@ label{
   .login-card form button {
     font-size: 0.9rem;
   }
+
+  .linha-dupla {
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
 }
 
+@media (max-width: 760px) and (min-width: 501px) {
+  .main-content {
+    flex-direction: column;
+  }
+
+  .container-left {
+    text-align: center;
+    padding: 25px;
+  }
+
+  #react-containerImage-right {
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    min-height: 250px;
+  }
+}
+
+
 @media (max-width: 480px) {
-  .cabeçalho {
+  .cabecalho {
     padding: 10px 15px;
   }
 
@@ -690,6 +772,10 @@ label{
   .header-links a {
     display: block;
     margin: 8px 0;
+  }
+
+  .header-links .separador {
+    display: none;
   }
 
   .container-left {
@@ -710,7 +796,9 @@ label{
     font-size: 1rem;
   }
 
-  .modal-card, .login-card, .modal-content {
+  .modal-card,
+  .login-card,
+  .modal-content {
     width: 95%;
     padding: 15px;
   }
