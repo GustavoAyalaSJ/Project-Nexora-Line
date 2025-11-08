@@ -71,6 +71,15 @@ function DisplayVaga({ vaga }) {
         <div className="vaga-display-detalhes">
             <h2>{vaga.title}</h2>
             <p>Detalhes completos da vaga ID: {vaga.id}</p>
+            <p>Empresa: {vaga.company}</p>
+            <p>Dirigente: {vaga.dirigente || 'Não informado'}</p>
+            <p>Período: {vaga.period || 'Não informado'}</p>
+            <p>Local: {vaga.city}, {vaga.state}</p>
+            <p>Tipo Profissional: {vaga.level || 'Não informado'}</p>
+            <p>Tipo de Trabalho: {vaga.serviceType || 'Não informado'}</p>
+            <p>Detalhes: {vaga.details || 'Nenhum detalhe fornecido.'}</p>
+            <p>Contato: {vaga.phone || 'Não informado'} | {vaga.email || 'Não informado'}</p>
+            {vaga.linkedin && <p>LinkedIn: <a href={vaga.linkedin} target="_blank" rel="noopener noreferrer">{vaga.linkedin}</a></p>}
             <button className="edit-vaga-button"><i className="bi bi-pencil"></i> Editar Vaga</button>
         </div>
     );
@@ -110,15 +119,15 @@ function handleImageUpload(event) {
     }
 }
 
-(function loadSavedLogo() {
+// Chamar esta função após o carregamento inicial da página para carregar o logo salvo
+document.addEventListener('DOMContentLoaded', () => {
     const savedLogo = localStorage.getItem('companyLogoDataURL');
     const logoPreview = document.getElementById("logoPreview");
 
     if (savedLogo && logoPreview) {
         logoPreview.src = savedLogo;
     }
-})();
-
+});
 
 
 function FormularioCriacaoVaga({ onCancel, onPublicar }) {
@@ -156,8 +165,8 @@ function FormularioCriacaoVaga({ onCancel, onPublicar }) {
     const handlePublicar = (e) => {
         e.preventDefault();
 
-        if (!formData.title || !formData.company || !formData.state) {
-            alert('Por favor, preencha o Título, Empresa e Estado.');
+        if (!formData.title || !formData.company || !formData.state || !formData.city) {
+            alert('Por favor, preencha o Título, Empresa, Estado e Município.');
             return;
         }
 
@@ -176,7 +185,7 @@ function FormularioCriacaoVaga({ onCancel, onPublicar }) {
                                 id="logoPreview"
                                 className="logo-preview-box"
                                 alt="Logo preview"
-                                src=""
+                                src="https://via.placeholder.com/120x120?text=Logo" // Placeholder padrão
                             />
                             <input
                                 type="file"
@@ -276,101 +285,122 @@ function FormularioCriacaoVaga({ onCancel, onPublicar }) {
 }
 
 function GerenciamentoVagas() {
-    const [vagas, setVagas] = useState([]);
-    const [titulo, setTitulo] = useState("");
-    const [descricao, setDescricao] = useState("");
-    const [localizacao, setLocalizacao] = useState("");
-    const [editando, setEditando] = useState(null);
+    const [vagasPublicadas, setVagasPublicadas] = React.useState(getStoredVagas);
+    const [viewMode, setViewMode] = React.useState('list'); // 'list', 'create', 'details'
 
-    useEffect(() => {
-        const vagasSalvas = JSON.parse(localStorage.getItem("nexoraVagas")) || [];
-        setVagas(vagasSalvas);
-    }, []);
+    const [selectedVagaId, setSelectedVagaId] = React.useState(null);
 
-    const atualizarLocalStorage = (vagasAtualizadas) => {
-        localStorage.setItem("nexoraVagas", JSON.stringify(vagasAtualizadas));
-        setVagas(vagasAtualizadas);
+    const nextId = React.useMemo(() => {
+        return vagasPublicadas.length > 0
+            ? Math.max(...vagasPublicadas.map(v => v.id)) + 1
+            : 1;
+    }, [vagasPublicadas]);
 
-        window.dispatchEvent(new Event("storage"));
+    const handlePublicarVaga = (novaVagaData) => {
+        const novaVaga = {
+            id: nextId,
+            title: novaVagaData.title,
+            company: novaVagaData.company,
+            state: novaVagaData.state,
+            city: novaVagaData.city,
+            status: 'Ativa',
+            daysActive: 0,
+            applicants: 0,
+            ...novaVagaData
+        };
+
+        const novasVagas = [novaVaga, ...vagasPublicadas];
+        setVagasPublicadas(novasVagas);
+
+        saveVagasToStorage(novasVagas);
+
+        setSelectedVagaId(novaVaga.id);
+        setViewMode('details');
+        alert(`Vaga "${novaVaga.title}" publicada com sucesso! (ID: ${novaVaga.id})`);
     };
 
-    const salvarVaga = (e) => {
-        e.preventDefault();
+    const handleRemoverVaga = (vagaId) => {
+        setVagasPublicadas((vagasAtuais) => {
+            const novasVagas = vagasAtuais.filter(v => v.id !== vagaId);
+            saveVagasToStorage(novasVagas);
+            return novasVagas;
+        });
 
-        if (editando !== null) {
-            const vagasAtualizadas = vagas.map((vaga, index) =>
-                index === editando ? { titulo, descricao, localizacao } : vaga
-            );
-            atualizarLocalStorage(vagasAtualizadas);
-            setEditando(null);
-        } else {
-            const novaVaga = { titulo, descricao, localizacao };
-            const vagasAtualizadas = [...vagas, novaVaga];
-            atualizarLocalStorage(vagasAtualizadas);
+        if (selectedVagaId === vagaId) {
+            setSelectedVagaId(null);
+            setViewMode('list'); // Volta para a visualização de lista vazia ou primeira vaga
+        }
+    };
+
+    const vagaAtiva = React.useMemo(() => {
+        return vagasPublicadas.find(v => v.id === selectedVagaId);
+    }, [selectedVagaId, vagasPublicadas]);
+
+    const handleSelectVaga = (id) => {
+        setSelectedVagaId(id);
+        setViewMode('details');
+    };
+
+    const handleCriarVagaClick = () => {
+        setViewMode('create');
+        setSelectedVagaId(null); // Desseleciona qualquer vaga ao criar uma nova
+    };
+
+    const handleCancelForm = () => {
+        setViewMode('list'); // Volta para a visualização de lista
+        setSelectedVagaId(null);
+    };
+
+    const renderDisplayContent = () => {
+        if (viewMode === 'create') {
+            return <FormularioCriacaoVaga onCancel={handleCancelForm} onPublicar={handlePublicarVaga} />;
         }
 
-        setTitulo("");
-        setDescricao("");
-        setLocalizacao("");
-    };
-
-    const removerVaga = (index) => {
-        const vagasAtualizadas = vagas.filter((_, i) => i !== index);
-        atualizarLocalStorage(vagasAtualizadas);
-    };
-
-    const editarVaga = (index) => {
-        const vaga = vagas[index];
-        setTitulo(vaga.titulo);
-        setDescricao(vaga.descricao);
-        setLocalizacao(vaga.localizacao);
-        setEditando(index);
+        // Se estiver em 'details' ou 'list' e houver uma vaga selecionada, exibe os detalhes
+        if (vagaAtiva) {
+            return <DisplayVaga vaga={vagaAtiva} />;
+        }
+        
+        // Caso contrário, mostra o placeholder.
+        return <DisplayVaga vaga={null} />; 
     };
 
     return (
-        <div className="gerenciamento-container">
-            <h2>Gerenciamento de Vagas</h2>
-
-            <form onSubmit={salvarVaga} className="form-vagas">
-                <input
-                    type="text"
-                    placeholder="Título da vaga"
-                    value={titulo}
-                    onChange={(e) => setTitulo(e.target.value)}
-                    required
-                />
-                <textarea
-                    placeholder="Descrição da vaga"
-                    value={descricao}
-                    onChange={(e) => setDescricao(e.target.value)}
-                    required
-                />
-                <input
-                    type="text"
-                    placeholder="Localização"
-                    value={localizacao}
-                    onChange={(e) => setLocalizacao(e.target.value)}
-                    required
-                />
-                <button type="submit">
-                    {editando !== null ? "Atualizar Vaga" : "Adicionar Vaga"}
-                </button>
-            </form>
-
-            <ul className="lista-vagas">
-                {vagas.map((vaga, index) => (
-                    <li key={index} className="vaga-item">
-                        <h3>{vaga.titulo}</h3>
-                        <p>{vaga.descricao}</p>
-                        <p><strong>Local:</strong> {vaga.localizacao}</p>
-                        <div className="botoes">
-                            <button onClick={() => editarVaga(index)}>Editar</button>
-                            <button onClick={() => removerVaga(index)}>Remover</button>
+        <React.Fragment>
+            <div className="dashboard-container">
+                <main className="gerenciamento-layout">
+                    <section className="vagas-publicadas-section">
+                        <div className="section-header">
+                            <h2>LISTA DE VAGAS PUBLICADAS</h2>
+                            <button className="filter-button"><i className="bi bi-funnel"></i> FILTRAR <i className="bi bi-chevron-down"></i></button>
                         </div>
-                    </li>
-                ))}
-            </ul>
-        </div>
+
+                        <div className="vagas-list-scroll">
+                            {vagasPublicadas.length > 0 ? (
+                                vagasPublicadas.map(vaga => (
+                                    <VagaPublicadaCard
+                                        key={vaga.id}
+                                        vaga={vaga}
+                                        isSelected={vaga.id === selectedVagaId}
+                                        onSelectVaga={handleSelectVaga}
+                                        onRemove={handleRemoverVaga}
+                                    />
+                                ))
+                            ) : (
+                                <p className="empty-list-message">Nenhuma vaga publicada ainda. Clique em "Criar Vagas" para começar.</p>
+                            )}
+                        </div>
+                    </section>
+
+                    <section className="vagas-display-section">
+                        <button onClick={handleCriarVagaClick} className="create-vaga-button">
+                            CRIAR VAGAS
+                        </button>
+                        {renderDisplayContent()}
+                    </section>
+                </main>
+            </div>
+        </React.Fragment>
     );
 }
 
@@ -378,15 +408,15 @@ function UserActions() {
     const [dropdownAberto, setDropdownAberto] = React.useState(null);
     const dropdownRef = React.useRef(null);
 
-    const handleAbrirNotificações = () => setDropdownAberto('notifications-button');
-    const handleAbrirPerfil = () => setDropdownAberto('profile-button');
-    const handleFecharDropdown = () => setDropdownAberto(null);
+    const handleAbrirNotificações = () => setDropdownAberto(prev => prev === 'notifications-button' ? null : 'notifications-button');
+    const handleAbrirPerfil = () => setDropdownAberto(prev => prev === 'profile-button' ? null : 'profile-button');
 
     React.useEffect(() => {
         function handleClickFora(event) {
             if (
                 dropdownRef.current &&
-                !dropdownRef.current.contains(event.target)
+                !dropdownRef.current.contains(event.target) &&
+                event.target.closest('.icon-button') === null // Não fechar se o clique for no próprio botão
             ) {
                 setDropdownAberto(null);
             }
@@ -416,7 +446,7 @@ function UserActions() {
                 <div ref={dropdownRef} className="dropdown-content">
                     <h1 className="notification-text"><strong>Notificações</strong></h1>
                     <p className="notification-warning">Você não possui novas notificações.</p>
-                    <button onClick={handleFecharDropdown} className="close-dropdown">Fechar</button>
+                    <button onClick={() => setDropdownAberto(null)} className="close-dropdown">Fechar</button>
                 </div>
             )}
 
@@ -425,7 +455,7 @@ function UserActions() {
                     <a href="PerfilEmpresaPage.html" className="settings-link"><i className="bi bi-person-badge"></i>Perfil</a>
                     <a href="#" className="settings-link"><i className="bi bi-gear"></i> Configurações</a>
                     <a href="IntroducedPage.html"><i className="bi bi-box-arrow-left"></i> Sair</a>
-                    <button onClick={handleFecharDropdown} className="close-dropdown">Fechar</button>
+                    <button onClick={() => setDropdownAberto(null)} className="close-dropdown">Fechar</button>
                 </div>
             )}
         </React.Fragment>
