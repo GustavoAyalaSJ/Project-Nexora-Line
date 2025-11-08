@@ -1,9 +1,7 @@
 Bloco de notas para análise de coisas incompletas no Nexora
 
 1. IntroducedPage.html
-- Não tem modais para esqueceu o email e senha;
-- O botão cadastro não funciona;
-- Arrumar o CSS responsivo e tentar encontrar uma resolução de imagem boa.
+- Não tem modais para esqueceu o e-mail e senha.
 
 2. UserPage.html
 - As fotos das empresas não aparecem nas vagas favoritadas;
@@ -12,7 +10,8 @@ Bloco de notas para análise de coisas incompletas no Nexora
 
 3. VagasPage.html
 - Não tem modal de configurações;
-- Modal de Contato deve ser atualizado.
+- Modal de Contato deve ser atualizado;
+- Colocar media-queries;
 
 4. PerfilPage.html
 - Não tem modal de configurações.
@@ -21,10 +20,12 @@ Bloco de notas para análise de coisas incompletas no Nexora
 - Fazer o botão de excluir vagas funcione;
 - Tornar o botão de filtrar funcional;
 - O botão de "editar vagas" não funciona;
-- O display não funciona.
+- O display não funciona;
+- Colocar media-queries.
 
 6. EmpresaPage.html
-- O botão de postar notícias não funciona.
+- O botão de postar notícias não funciona;
+- Colocar media-queries.
 
 7. PerfilEmpresaPage.html
 - A interface está incompleta.

@@ -90,20 +90,28 @@ const ESTADOS_DATA = [
     { nome: "Tocantins", sigla: "TO", municipios: ["Palmas", "Araguaína"] }
 ];
 
-function DetalhesVaga({ vaga, onAbrirModalContato }) {
+function DetalhesVaga({ vaga, onAbrirModalContato, interesseMap, setInteresseMap }) {
 
     const savedLogoSrc = localStorage.getItem('companyLogoDataURL');
     const logoToDisplay = savedLogoSrc || vaga?.logo;
+
+    const temInteresse = !!interesseMap[vaga?.id];
+
+    const handleInteresseClick = () => {
+        if (vaga && vaga.id) {
+            setInteresseMap(prev => ({
+                ...prev,
+                [vaga.id]: true
+            }));
+        }
+    };
 
     if (!vaga) {
         return (
             <aside className="detalhes-container placeholder">
                 <h2>MAIS INFORMAÇÕES</h2>
                 <div className="detalhes-empresa">
-                    <img src={savedLogoSrc} alt="Logo da Empresa" className="detalhes-logo" />
-                    ) : (
                     <div className="detalhes-logo logo-placeholder">LOGO</div>
-                    )
                     <h3>NOME DA EMPRESA</h3>
                 </div>
                 <div className="detalhes-info">
@@ -137,8 +145,21 @@ function DetalhesVaga({ vaga, onAbrirModalContato }) {
                 <strong>DETALHES:</strong>
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
             </div>
+            {!temInteresse && (
+                <button
+                    className="interesse-button"
+                    onClick={handleInteresseClick}
+                >
+                    <i className="bi bi-check-circle"></i> ESTOU INTERESSADO
+                </button>
+            )}
 
-            <button onClick={onAbrirModalContato} className="contato-button">
+            <button
+                onClick={onAbrirModalContato}
+                className="contato-button"
+                disabled={!temInteresse} // Desabilitado se não tiver interesse
+                title={!temInteresse ? "Clique em 'Estou Interessado' para desbloquear" : "Entrar em contato"}
+            >
                 ENTRAR EM CONTATO
             </button>
         </aside>
@@ -231,9 +252,9 @@ function PaginaDeVagas() {
 
     const [vagaSelecionadaId, setVagaSelecionadaId] = React.useState(null);
 
-
     const [modalContatoAberto, setModalContatoAberto] = React.useState(false);
 
+    const [interesseMap, setInteresseMap] = React.useState({});
 
     const municipiosParaFiltro = React.useMemo(() => {
         if (filtros.estado === 'todos') return [];
@@ -279,7 +300,6 @@ function PaginaDeVagas() {
     function handleSelecionarVaga(id) {
         setVagaSelecionadaId(id);
     }
-
 
     const handleAbrirContato = () => setModalContatoAberto(true);
     const handleFecharContato = () => setModalContatoAberto(false);
@@ -332,6 +352,8 @@ function PaginaDeVagas() {
                     <DetalhesVaga
                         vaga={vagaAtiva}
                         onAbrirModalContato={handleAbrirContato}
+                        interesseMap={interesseMap}
+                        setInteresseMap={setInteresseMap}
                     />
 
                 </main>
@@ -343,7 +365,24 @@ function PaginaDeVagas() {
                     <div className="modal-content">
                         <button onClick={handleFecharContato} style={{ float: 'right' }}>X</button>
                         <h2>Contato</h2>
-                        <p>Placeholder</p>
+                       {vagaAtiva ? (
+                                <div className="contato-info">
+                                    <p>
+                                        <strong>LinkedIn:</strong> 
+                                        <a href={vagaAtiva.linkedin} target="_blank" rel="noopener noreferrer">{vagaAtiva.linkedin || "Não informado"}</a>
+                                    </p>
+                                    <p>
+                                        <strong>Email:</strong> 
+                                        <a href={`mailto:${vagaAtiva.email}`}>{vagaAtiva.email || "Não informado"}</a>
+                                    </p>
+                                    <p>
+                                        <strong>Telefone:</strong> 
+                                        {vagaAtiva.phone || "Não informado"}
+                                    </p>
+                                </div>
+                            ): (
+                                <p>Erro ao carregar informações de contato.</p>
+                            )}
                     </div>
                 </div>
             )}
