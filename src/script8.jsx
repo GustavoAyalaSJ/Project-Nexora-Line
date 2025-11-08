@@ -276,129 +276,101 @@ function FormularioCriacaoVaga({ onCancel, onPublicar }) {
 }
 
 function GerenciamentoVagas() {
-    const [vagasPublicadas, setVagasPublicadas] = React.useState(getStoredVagas);
-    const [viewMode, setViewMode] = React.useState('list');
+    const [vagas, setVagas] = useState([]);
+    const [titulo, setTitulo] = useState("");
+    const [descricao, setDescricao] = useState("");
+    const [localizacao, setLocalizacao] = useState("");
+    const [editando, setEditando] = useState(null);
 
-    const [selectedVagaId, setSelectedVagaId] = React.useState(null);
-
-    const nextId = React.useMemo(() => {
-        return vagasPublicadas.length > 0
-            ? Math.max(...vagasPublicadas.map(v => v.id)) + 1
-            : 1;
-    }, [vagasPublicadas]);
-
-    const handlePublicarVaga = (novaVagaData) => {
-        const novaVaga = {
-            id: nextId,
-            title: novaVagaData.title,
-            company: novaVagaData.company,
-            state: novaVagaData.state,
-            city: novaVagaData.city,
-            status: 'Ativa',
-            daysActive: 0,
-            applicants: 0,
-            ...novaVagaData
-        };
-
-        const novasVagas = [novaVaga, ...vagasPublicadas];
-        setVagasPublicadas(novasVagas);
-
-        saveVagasToStorage(novasVagas);
-
-        setSelectedVagaId(novaVaga.id);
-        setViewMode('details');
-        alert(`Vaga "${novaVaga.title}" publicada com sucesso! (ID: ${novaVaga.id})`);
-    };
-
-    const handleRemoverVaga = (vagaId) => {
-        setVagasPublicadas((vagasAtuais) => {
-            const novasVagas = vagasAtuais.filter(v => v.id !== vagaId);
-            localStorage.setItem('vagasPublicadas', JSON.stringify(novasVagas));
-            return novasVagas;
-        });
-
-        if (selectedVagaId === vagaId) {
-            setSelectedVagaId(null);
-        }
-    };
-
-    React.useEffect(() => {
-        const vagasSalvas = JSON.parse(localStorage.getItem('vagasPublicadas')) || [];
-        setVagasPublicadas(vagasSalvas);
+    useEffect(() => {
+        const vagasSalvas = JSON.parse(localStorage.getItem("nexoraVagas")) || [];
+        setVagas(vagasSalvas);
     }, []);
 
+    const atualizarLocalStorage = (vagasAtualizadas) => {
+        localStorage.setItem("nexoraVagas", JSON.stringify(vagasAtualizadas));
+        setVagas(vagasAtualizadas);
 
-
-    const vagaAtiva = React.useMemo(() => {
-        return vagasPublicadas.find(v => v.id === selectedVagaId);
-    }, [selectedVagaId, vagasPublicadas]);
-
-    const handleSelectVaga = (id) => {
-        setSelectedVagaId(id);
-        setViewMode('details');
+        window.dispatchEvent(new Event("storage"));
     };
 
-    const handleCriarVagaClick = () => {
-        setViewMode('create');
-        setSelectedVagaId(null);
-    };
+    const salvarVaga = (e) => {
+        e.preventDefault();
 
-    const handleCancelForm = () => {
-        setViewMode('list');
-        setSelectedVagaId(null);
-    };
-
-    const renderDisplayContent = () => {
-        if (viewMode === 'create') {
-            return <FormularioCriacaoVaga onCancel={handleCancelForm} onPublicar={handlePublicarVaga} />;
+        if (editando !== null) {
+            const vagasAtualizadas = vagas.map((vaga, index) =>
+                index === editando ? { titulo, descricao, localizacao } : vaga
+            );
+            atualizarLocalStorage(vagasAtualizadas);
+            setEditando(null);
+        } else {
+            const novaVaga = { titulo, descricao, localizacao };
+            const vagasAtualizadas = [...vagas, novaVaga];
+            atualizarLocalStorage(vagasAtualizadas);
         }
 
-        if (viewMode === 'details' && vagaAtiva) {
-            return <DisplayVaga vaga={vagaAtiva} />;
-        }
+        setTitulo("");
+        setDescricao("");
+        setLocalizacao("");
+    };
 
-        return <DisplayVaga vaga={vagaAtiva} />;
+    const removerVaga = (index) => {
+        const vagasAtualizadas = vagas.filter((_, i) => i !== index);
+        atualizarLocalStorage(vagasAtualizadas);
+    };
+
+    const editarVaga = (index) => {
+        const vaga = vagas[index];
+        setTitulo(vaga.titulo);
+        setDescricao(vaga.descricao);
+        setLocalizacao(vaga.localizacao);
+        setEditando(index);
     };
 
     return (
-        <React.Fragment>
-            <div className="dashboard-container">
-                <main className="gerenciamento-layout">
+        <div className="gerenciamento-container">
+            <h2>Gerenciamento de Vagas</h2>
 
-                    <section className="vagas-publicadas-section">
-                        <div className="section-header">
-                            <h2>LISTA DE VAGAS PUBLICADAS</h2>
-                            <button className="filter-button"><i className="bi bi-funnel"></i> FILTRAR <i className="bi bi-chevron-down"></i></button>
+            <form onSubmit={salvarVaga} className="form-vagas">
+                <input
+                    type="text"
+                    placeholder="Título da vaga"
+                    value={titulo}
+                    onChange={(e) => setTitulo(e.target.value)}
+                    required
+                />
+                <textarea
+                    placeholder="Descrição da vaga"
+                    value={descricao}
+                    onChange={(e) => setDescricao(e.target.value)}
+                    required
+                />
+                <input
+                    type="text"
+                    placeholder="Localização"
+                    value={localizacao}
+                    onChange={(e) => setLocalizacao(e.target.value)}
+                    required
+                />
+                <button type="submit">
+                    {editando !== null ? "Atualizar Vaga" : "Adicionar Vaga"}
+                </button>
+            </form>
+
+            <ul className="lista-vagas">
+                {vagas.map((vaga, index) => (
+                    <li key={index} className="vaga-item">
+                        <h3>{vaga.titulo}</h3>
+                        <p>{vaga.descricao}</p>
+                        <p><strong>Local:</strong> {vaga.localizacao}</p>
+                        <div className="botoes">
+                            <button onClick={() => editarVaga(index)}>Editar</button>
+                            <button onClick={() => removerVaga(index)}>Remover</button>
                         </div>
-
-                        <div className="vagas-list-scroll">
-                            {vagasPublicadas.length > 0 ? (
-                                vagasPublicadas.map(vaga => (
-                                    <VagaPublicadaCard
-                                        key={vaga.id}
-                                        vaga={vaga}
-                                        isSelected={vaga.id === selectedVagaId}
-                                        onSelectVaga={handleSelectVaga}
-                                        onRemove={handleRemoverVaga}
-                                    />
-                                ))
-                            ) : (
-                                <p className="empty-list-message">Nenhuma vaga publicada ainda. Clique em "Criar Vagas" para começar.</p>
-                            )}
-                        </div>
-                    </section>
-
-                    <section className="vagas-display-section">
-                        <button onClick={handleCriarVagaClick} className="create-vaga-button">
-                            CRIAR VAGAS
-                        </button>
-
-                        {renderDisplayContent()}
-                    </section>
-
-                </main>
-            </div>
-        </React.Fragment>
+                    </li>
+                ))}
+            </ul>
+        </div>
     );
 }
 
