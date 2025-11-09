@@ -25,16 +25,25 @@ body {
     background-color: #111;
     color: #fff;
     position: relative;
+    gap: 1.5rem;
+}
+
+.logotipo {
+    flex-shrink: 0; 
+    max-width: 250px; 
+    position: relative;
 }
 
 .logotipo img {
     height: 45px;
+    width: auto;
+    max-width: 100%;
+    display: block; 
 }
 
 .nav-menu {
-    display: flex;
-    gap: 1.5rem;
     margin-left: auto;
+    display: flex;
 }
 
 .nav-button {
@@ -85,7 +94,6 @@ body {
 
 #react-userActions {
     position: relative;
-    margin-left: 1.5rem;
 }
 
 .header-user-actions {
@@ -406,35 +414,56 @@ footer {
 /* Tablets (até 900px) */
 @media (max-width: 900px) {
     .cabeçalho {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1.2rem;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
         padding: 1.2rem;
-    }
-
-    .logotipo img {
-        height: 40px;
-    }
-
-    .nav-menu {
-        flex-direction: column;
-        width: 100%;
         gap: 1rem;
     }
 
+    .logotipo {
+        order: 1;
+        flex-shrink: 0;
+        max-width: 250px;
+        position: relative;
+    }
+    
+    .logotipo img{
+        height: 45px;
+        width: auto;
+        max-width: 100%;
+        display: block;
+    }
+
+    .nav-menu {
+        order: 2;
+        margin-left: auto; 
+    }
+
     .nav-button {
-        width: 100%;
-        text-align: center;
+        order: 1;
+        margin: 0;
+    }
+
+    #react-userActions{
+        order: 3;
     }
 
     .search-bar {
+        order: 4; 
         width: 100%;
-        border-color: #ccc;
+        max-width: none;
+        margin-top: 0;
     }
 
     .search-bar input[type="text"] {
         width: 100%;
-        color: #111;
+        color: #fff;
+    }
+
+    .header-user-actions {
+        width: auto;
+        padding-top: 0;
     }
 
     .main-layout {
@@ -466,29 +495,47 @@ footer {
 
 /* Smartphones (até 600px) */
 @media (max-width: 600px) {
+    .cabeçalho{
+        padding: 1rem;
+        justify-content: center;
+        display: flex;
+    }
+
+    logotipo{
+        order: 1;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 0.5rem;
+    }
+    
+    .nav-menu{
+        order: 2;
+        margin-left: auto; 
+    }
+
+    .nav-button {
+        order: 1;
+        margin: 0;
+    }
+
     .messageWelcome {
         font-size: 1.4rem;
         margin-bottom: 1.5rem;
     }
 
-    .nav-button {
-        font-size: 0.8rem;
-        width: 53%;
-        padding: 10px 5px;
-        margin-left: 103px;
+    .search-bar {
+        order: 4;
     }
 
-    .search-bar {
-        width: 80%;
-        padding: 6px;
-        margin-left: 40px;
-        justify-content: space-between;
+    #react-userActions{
+        order: 3;
+        margin-left: 0;
     }
 
     .header-user-actions {
-        gap: 0.6rem;
-        height: 20px;
-        margin-left: 175px;
+        justify-content: center;
+        gap: 1rem;
     }
 
     .icon-button {

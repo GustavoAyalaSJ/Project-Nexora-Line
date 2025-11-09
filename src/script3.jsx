@@ -366,7 +366,7 @@ function FooterComModals() {
                     </button>
                     <span className="separador">|</span>
                     <button onClick={() => setModalAberto("termos")} className="link-button">
-                        Termos e Privacidade
+                        Termos e Serviços
                     </button>
                 </div>
             </footer>
@@ -381,14 +381,14 @@ function FooterComModals() {
                         {modalAberto === "termos" && (
                             <>
                                 <h2>Termos e Serviços</h2>
-                                <p>PLACEHOLDER DE TERMOS.</p>
+                                <p>PLACEHOLDER.</p>
                             </>
                         )}
 
                         {modalAberto === "ajuda" && (
                             <>
                                 <h2>Ajuda</h2>
-                                <p>Selecione o tipo de problema para suporte.</p>
+                                <p>PLACEHOLDER.</p>
                             </>
                         )}
 

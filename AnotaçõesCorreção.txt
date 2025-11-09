@@ -10,7 +10,6 @@ Bloco de notas para análise de coisas incompletas no Nexora
 
 3. VagasPage.html
 - Não tem modal de configurações;
-- Colocar media-queries.
 
 4. PerfilPage.html
 - Não tem modal de configurações.
