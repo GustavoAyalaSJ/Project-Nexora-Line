@@ -28,7 +28,7 @@ body {
 }
 
 /* Cabeçalho */
-.cabecalho {
+.cabeçalho {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -303,7 +303,6 @@ body {
   text-transform: uppercase;
 }
 
-
 /* Caixa de Aviso (Warning Box) */
 .warning-box {
   background-color: #FFF3CD;
@@ -390,7 +389,13 @@ body {
 }
 
 .login-card form a:hover {
-  text-decoration: underline;
+  text-decoration: none;
+  color: #6792bc;
+  transition: 0.2s ease;
+  text-shadow:
+    inset 0 0 12px #7daddd,
+    inset 0 0 24px #76aade,
+    inset 0 0 32px #73a2d0;
 }
 
 .login-card form button {
@@ -435,7 +440,7 @@ body {
 .login-card form p a {
   font-weight: bold;
   color: #89c4ff;
-  text-decoration: underline;
+  text-decoration: none;
   cursor: pointer;
   text-align: center;
   margin: 0;
@@ -473,7 +478,6 @@ body {
   padding-bottom: 5px;
 }
 
-
 /*  Modais (Brancos - Termos, Suporte) */
 .modal,
 .modal-overlay {
@@ -487,7 +491,6 @@ body {
   justify-content: center;
   align-items: center;
   z-index: 1000;
-  /* Acima de tudo */
   padding: 20px;
 }
 
@@ -525,11 +528,11 @@ label {
   font-size: 1.7rem;
   font-weight: bold;
   cursor: pointer;
-  color: #aaa;
+  color: #b0b0b0;
 }
 
 .modal-content>button:first-of-type:hover {
-  color: #333;
+  color: #020202;
 }
 
 .modal-content form {
@@ -606,7 +609,7 @@ label {
 }
 
 @media (max-width: 1366px) {
-  .cabecalho {
+  .cabeçalho {
     padding: 15px 30px;
   }
 
@@ -679,7 +682,7 @@ label {
 }
 
 @media (max-width: 768px) {
-  .cabecalho {
+  .cabeçalho {
     flex-direction: column;
     text-align: center;
     gap: 10px;
@@ -761,7 +764,7 @@ label {
 
 
 @media (max-width: 480px) {
-  .cabecalho {
+  .cabeçalho {
     padding: 10px 15px;
   }
 

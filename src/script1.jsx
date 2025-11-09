@@ -155,7 +155,7 @@ function ModaisNexora() {
                             <span onClick={() => setMostrarSenha(!mostrarSenha)}
                                 style={{ marginLeft: '10px', cursor: 'pointer' }}>
                                 {mostrarSenha ? (
-                                    <i className="bi bi-eye-slash-fill"></i> // Adicione o link para o Bootstrap Icons no seu HTML
+                                    <i className="bi bi-eye-slash-fill"></i>
                                 ) : (
                                     <i className="bi bi-eye-fill"></i>
                                 )}
@@ -168,14 +168,13 @@ function ModaisNexora() {
 
                         <p>
                             Ao conectar-se com este site, você concorda com nossos
-                            <a onClick={handleAbrirTermos} style={{ cursor: 'pointer' }}> Termos de Uso </a> e
-                            <a onClick={handleAbrirPolítica} style={{ cursor: 'pointer' }}> Política de Privacidade </a>.
+                            <a onClick={handleAbrirTermos} className="loginlinks"> Termos de Uso </a> e
+                            <a onClick={handleAbrirPolítica} className="loginlinks"> Política de Privacidade</a>.
                         </p>
                     </form>
                 </div>
             )}
 
-            {/* Modal de Termos (Não ativa o blur) */}
             {mostrarTermos && (
                 <div className="modal-overlay">
                     <div className="modal-content">

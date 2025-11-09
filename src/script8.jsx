@@ -454,7 +454,7 @@ function UserActions() {
                 <div ref={dropdownRef} className="dropdown-content" id="profile-dropdown">
                     <a href="PerfilEmpresaPage.html" className="settings-link"><i className="bi bi-person-badge"></i>Perfil</a>
                     <a href="#" className="settings-link"><i className="bi bi-gear"></i> Configurações</a>
-                    <a href="IntroducedPage.html"><i className="bi bi-box-arrow-left"></i> Sair</a>
+                    <a href="IntroducedPage.html" className="settings-link"><i className="bi bi-box-arrow-left"></i> Sair</a>
                     <button onClick={() => setDropdownAberto(null)} className="close-dropdown">Fechar</button>
                 </div>
             )}
