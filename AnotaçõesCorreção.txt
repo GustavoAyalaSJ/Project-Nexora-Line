@@ -14,13 +14,16 @@ Bloco de notas para análise de coisas incompletas no Nexora
 4. PerfilPage.html
 - Não tem modal de configurações.
 
+5. PortifólioPage.html
+- A interface está incompleta.
+
 5. GerenciamentoVagas.html
 - Tornar o botão de filtrar funcional;
-- O botão de "editar vagas" não funciona;
-- Colocar media-queries.
+- O botão de "editar vagas" não funciona.
 
 6. EmpresaPage.html
 - O botão de postar notícias não funciona;
+- O quadro de vagas publicadas não coloca vagas publicadas pela empresa;
 - Colocar media-queries.
 
 7. PerfilEmpresaPage.html
