@@ -1,4 +1,3 @@
-// COMPONENTES
 function Box({ title, boxType, children }) {
     // Você precisará estilizar 'box-container' e as classes (blue-dark, etc.) no seu CSS
     const className = `box-container ${boxType}`;
@@ -21,7 +20,6 @@ function UserActions() {
 
     const handleFecharDropdown = () => setDropdownAberto(null);
 
-    //DROPDOWN HEADER
     React.useEffect(() => {
         function handleClickFora(event) {
             if (
@@ -176,6 +174,5 @@ function StartDashboardbox() {
     );
 }
 
-// RENDERIZAÇÃO 
 ReactDOM.createRoot(document.getElementById('react-userActions')).render(<UserActions />);
 ReactDOM.createRoot(document.getElementById('root')).render(<StartDashboardbox />);

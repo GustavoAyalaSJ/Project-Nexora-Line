@@ -1,7 +1,3 @@
-alert('Atenção caro usuário!');
-alert('Você está acessando um protótipo desenvolvido apenas para fins de demonstração, ele não é 100% operacional.');
-alert('Obrigado pela atenção!');
-
 function HeaderLinks() {
     const [modalAberto, setModalAberto] = React.useState(null);
 
