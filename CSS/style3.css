@@ -1,5 +1,13 @@
-/* Layout */
+/* GERAL E BODY */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+        Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     background-color: #f4f7f6;
     color: #333;
     display: flex;
@@ -11,8 +19,11 @@ body {
     background-image: url('Fundo3.jpg');
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
     flex-grow: 1;
     width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Cabeçalho */
@@ -20,12 +31,18 @@ body {
     display: flex;
     align-items: center;
     padding: 1rem 2.5rem;
-    background: #111;
+    background-color: #111;
     color: #fff;
+    position: relative;
+}
+
+.logo-link {
+    text-decoration: none;
 }
 
 .logotipo img {
     height: 35px;
+    display: block;
 }
 
 .nav-menu {
@@ -36,7 +53,21 @@ body {
 }
 
 .nav-button {
+    background-color: #f0f0f0;
+    color: #111;
+    border: none;
+    padding: 0.6rem 1.5rem;
     margin-right: 4px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    transition: background-color 0.2s ease;
+}
+
+.nav-button:hover {
+    background-color: #ddd;
 }
 
 .search-bar {
@@ -57,10 +88,35 @@ body {
     width: 200px;
 }
 
-/* Dropdown */
+.search-bar input::placeholder {
+    color: #ccc;
+}
+
+.search-bar .search-icon {
+    background: transparent;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0 0.3rem;
+}
+
 #react-userActions {
     position: relative;
     margin-left: 1.5rem;
+}
+
+.header-user-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.icon-button {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1.6rem;
+    cursor: pointer;
 }
 
 .dropdown-content {
@@ -68,19 +124,91 @@ body {
     top: 55px;
     right: 0;
     width: 300px;
-    background: #fff;
+    background-color: #fff;
     color: #333;
     border: 1px solid #ddd;
     border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
     padding: 1.5rem;
     z-index: 1000;
 }
 
-/* Main Content */
+#profile-dropdown {
+    width: 200px;
+}
+
+.dropdown-content .notification-text {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.dropdown-content .notification-warning {
+    font-size: 0.9rem;
+    color: #777;
+    margin-bottom: 1rem;
+}
+
+.dropdown-content a {
+    display: block;
+    text-decoration: none;
+    color: #222;
+    padding: 0.75rem 0;
+    font-size: 1rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.dropdown-content a:last-of-type {
+    border-bottom: none;
+}
+
+.dropdown-content a:hover {
+    background-color: #f9f9f9;
+}
+
+.dropdown-content a i {
+    margin-right: 10px;
+    width: 20px;
+}
+
+.close-dropdown {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+
+/* Conteúdo Principal */
+.main-content {
+    flex-grow: 1;
+}
+
 .vagas-pagina-container {
     padding: 2.5rem;
     max-width: 1400px;
     margin: 0 auto;
+}
+
+/* Filtros Dropdown */
+.filtros-container {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    background-color: #fff;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #eee;
+}
+
+.filtros-container select {
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    font-size: 1rem;
+    flex-grow: 1;
 }
 
 .vagas-conteudo-principal {
@@ -88,6 +216,7 @@ body {
     gap: 2rem;
 }
 
+/* Coluna da Esquerda (Lista de Vagas) */
 .lista-vagas-container {
     flex: 1;
     max-height: 75vh;
@@ -95,14 +224,17 @@ body {
     padding-right: 10px;
 }
 
+/* Card de Vaga Individual */
 .card-vaga {
     background: #fff;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     padding: 1.5rem;
     margin-bottom: 1rem;
+    cursor: pointer;
     position: relative;
-    transition: box-shadow .2s ease;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+    border-left: 5px solid transparent;
 }
 
 .card-vaga:hover {
@@ -111,21 +243,25 @@ body {
 
 .card-vaga.active {
     border-left-color: #0052cc;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .card-vaga h3 {
     font-size: 1.3rem;
     color: #0052cc;
+    margin-bottom: 0.25rem;
 }
 
 .card-vaga .empresa {
     font-weight: 600;
     color: #333;
+    margin-bottom: 0.25rem;
 }
 
 .card-vaga .local {
     font-size: 0.9rem;
     color: #777;
+    margin-bottom: 1rem;
 }
 
 .card-vaga .info-rodape {
@@ -139,23 +275,35 @@ body {
     position: absolute;
     top: 1.5rem;
     right: 1.5rem;
+    background: transparent;
+    border: none;
+    font-size: 1.3rem;
+    color: #aaa;
+    cursor: pointer;
+}
+
+.card-vaga .favorite-btn .bi-heart-fill {
+    color: #e44d4d;
 }
 
 .sem-vagas-aviso {
     padding: 3rem 1rem;
     text-align: center;
     color: #777;
-    background: #fff;
+    font-size: 1.1rem;
+    background-color: #fff;
     border: 1px dashed #ddd;
     border-radius: 8px;
 }
 
+/* Coluna da Direita (Detalhes da Vaga) */
 .detalhes-container {
     flex: 1.5;
-    background: #fff;
+    background-color: #fff;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     padding: 2rem;
+    height: fit-content;
 }
 
 .detalhes-container h2 {
@@ -184,6 +332,12 @@ body {
     place-items: center;
 }
 
+.detalhes-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
 .detalhes-empresa h3 {
     font-size: 1.7rem;
     color: #333;
@@ -207,14 +361,43 @@ body {
     width: 100%;
     padding: 0.85rem 1.5rem;
     margin-top: 2rem;
+    background-color: #0052cc;
+    color: white;
+    border: none;
     border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    text-transform: uppercase;
+    transition: background-color 0.2s ease;
 }
 
 .contato-button:hover {
-    opacity: .98;
+    background-color: #0041a3;
 }
 
-/* Rodapé e Modais */
+.detalhes-container.placeholder {
+    color: #999;
+}
+
+.detalhes-container.placeholder h3,
+.detalhes-container.placeholder p {
+    color: #aaa;
+}
+
+.detalhes-logo.logo-placeholder {
+    display: grid;
+    place-items: center;
+    border: 2px dashed #ccc;
+    background-color: #f9f9f9;
+    color: #ccc;
+    font-weight: bold;
+    font-size: 1.2rem;
+    width: 70px;
+    height: 70px;
+}
+
+/* Rodape */
 #react-footer-e-modals {
     width: 100%;
 }
@@ -222,7 +405,7 @@ body {
 .rodape {
     text-align: center;
     padding: 2rem;
-    background: #000;
+    background-color: #000000;
     color: #fff;
 }
 
@@ -237,32 +420,164 @@ body {
     border: none;
     color: #fff;
     cursor: pointer;
+    font-size: 1rem;
+    text-decoration: none;
 }
 
-/* Modais */
+.link-button:hover {
+    color: #44a8ff;
+    transition: all 0.3s ease;
+}
+
+.separador {
+    color: #fff;
+}
+
+/* Estilos dos Modals e Botões */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: grid;
+    place-items: center;
+    z-index: 2000;
+}
+
 .modal-content {
+    background-color: #fff;
+    padding: 2.5rem;
+    position: relative;
+    border-radius: 8px;
     max-width: 500px;
+    width: 90%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content h2 {
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+}
+
+.modal-content form label {
+    display: block;
+    margin-top: 1rem;
+    font-weight: bold;
+    color: #555;
 }
 
 .modal-content>button:first-of-type {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    background: none;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 1.7rem;
+  font-weight: bold;
+  cursor: pointer;
+  color: #b0b0b0;
+}
+
+.modal-content>button:first-of-type:hover {
+  color: #020202;
+}
+
+.modal-content form input[type="text"],
+.modal-content form input[type="email"],
+.modal-content form textarea {
+    width: 100%;
+    padding: 0.75rem;
+    margin-top: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.modal-content form button {
+    padding: 0.75rem 1.5rem;
+    margin-top: 1.5rem;
+    margin-right: 1rem;
+    background-color: #0052cc;
+    color: white;
     border: none;
-    font-size: 1.7rem;
-    color: #b0b0b0;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.modal-content form button:hover {
+    background-color: #0041a3;
+}
+
+.modal-content form button[type="reset"] {
+    background-color: #aaa;
+}
+
+.modal-content form button[type="reset"]:hover {
+    background-color: #888;
 }
 
 .interesse-button {
     width: 100%;
     padding: 0.85rem 1.5rem;
     margin-top: 1rem;
+    background-color: #28a745;
+    color: white;
+    border: none;
     border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    text-transform: uppercase;
+    transition: background-color 0.2s ease;
 }
 
-/* Media Queries */
-@media (max-width:1024px) {
+.interesse-button:hover {
+    background-color: #218838;
+}
+
+.interesse-button i {
+    margin-right: 8px;
+}
+
+.contato-button:disabled {
+    background-color: #aaa;
+    cursor: not-allowed;
+}
+
+.contato-button:disabled:hover {
+    background-color: #aaa;
+
+}
+
+.contato-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    font-size: 1.1rem;
+}
+
+.contato-info p {
+    color: #333;
+    word-break: break-all;
+}
+
+.contato-info strong {
+    color: #000;
+    margin-right: 8px;
+}
+
+.contato-info a {
+    color: #0052cc;
+}
+
+/* MEDIA QUERIES */
+
+/* --- Tablets e Telas Menores (e.g., < 1024px) --- */
+@media (max-width: 1024px) {
     .vagas-pagina-container {
         padding: 1.5rem;
     }
@@ -273,27 +588,65 @@ body {
     }
 
     .lista-vagas-container {
+        flex: none;
         width: 100%;
         max-height: 50vh;
     }
 
     .detalhes-container {
+        flex: none;
         width: 100%;
     }
 }
 
-@media (max-width:768px) {
+/* --- Dispositivos Móveis (e.g., < 768px) --- */
+@media (max-width: 768px) {
     .cabeçalho {
+        display: flex;
         flex-wrap: wrap;
+        justify-content: space-between;
         padding: 1.2rem;
+        gap: 1rem;
+    }
+
+    .logotipo {
+        order: 1;
+        flex-shrink: 0;
+        max-width: 250px;
+        position: relative;
     }
 
     .logotipo img {
         height: 45px;
+        width: auto;
+        max-width: 100%;
+        display: block;
+    }
+
+    .nav-menu {
+        order: 2;
+        margin-left: auto; 
     }
 
     .search-bar {
+        order: 4; 
         width: 100%;
+        max-width: none;
+        margin-top: 0;
+    }
+
+    .search-bar input[type="text"] {
+        width: 100%;
+        color: white;
+    }
+
+    #react-userActions {
+        order: 3;
+    }
+
+    .header-user-actions {
+        width: auto;
+        padding-top: 0;
     }
 
     .vagas-pagina-container {
@@ -302,9 +655,34 @@ body {
 
     .filtros-container {
         flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .detalhes-empresa {
+        flex-direction: column;
+        align-items: flex-start;
     }
 
     .card-vaga {
         padding: 1rem;
+    }
+
+    .card-vaga .favorite-btn {
+        top: 1rem;
+        right: 1rem;
+    }
+
+    .rodape-links {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .rodape-links .separador {
+        display: none;
+    }
+
+    .modal-content {
+        padding: 1.5rem;
     }
 }
