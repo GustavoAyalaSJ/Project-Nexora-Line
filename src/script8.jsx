@@ -98,6 +98,8 @@ const getStoredVagas = () => {
 const saveVagasToStorage = (vagas) => {
     try {
         localStorage.setItem('nexoraVagas', JSON.stringify(vagas));
+        // Dispara evento para sincronizar outras abas/partes da aplicação
+        window.dispatchEvent(new CustomEvent('nexoraVagasUpdated', { detail: { vagas } }));
     } catch (error) {
         console.error("Erro ao salvar vagas no localStorage:", error);
     }
@@ -289,12 +291,75 @@ function GerenciamentoVagas() {
     const [viewMode, setViewMode] = React.useState('list'); // 'list', 'create', 'details'
 
     const [selectedVagaId, setSelectedVagaId] = React.useState(null);
+    const [authenticated, setAuthenticated] = React.useState(() => !!localStorage.getItem('nexoraCompanyAuthenticated'));
 
     const nextId = React.useMemo(() => {
         return vagasPublicadas.length > 0
             ? Math.max(...vagasPublicadas.map(v => v.id)) + 1
             : 1;
     }, [vagasPublicadas]);
+
+    React.useEffect(() => {
+        const modal = document.getElementById('companyPasswordModal');
+        const input = document.getElementById('companyPasswordInput');
+        const submitBtn = document.getElementById('companyPasswordSubmit');
+        const cancelBtn = document.getElementById('companyPasswordCancel');
+        const errorP = document.getElementById('companyPasswordError');
+
+        const getSecrets = () => {
+            const arr = [];
+            if (window && window.COMPANY_SECTION_PASSWORD) arr.push(window.COMPANY_SECTION_PASSWORD);
+            const local = localStorage.getItem('nexoraCompanyPass');
+            if (local) arr.push(local);
+            return arr;
+        };
+
+        const openModal = () => {
+            if (modal) {
+                modal.style.display = 'flex';
+            }
+            if (errorP) errorP.style.display = 'none';
+            if (input) input.value = '';
+            if (input) input.focus();
+        };
+
+        const closeModal = () => {
+            if (modal) modal.style.display = 'none';
+            if (errorP) errorP.style.display = 'none';
+        };
+
+        const handleSubmit = () => {
+            const val = (input && input.value) ? String(input.value).trim() : '';
+            const secrets = getSecrets();
+            if (secrets.includes(val)) {
+                setAuthenticated(true);
+                localStorage.setItem('nexoraCompanyAuthenticated', '1');
+                closeModal();
+            } else {
+                if (errorP) errorP.style.display = 'block';
+            }
+        };
+
+        const handleKey = (e) => {
+            if (e.key === 'Enter') handleSubmit();
+        };
+
+        if (!authenticated) {
+            openModal();
+        } else {
+            closeModal();
+        }
+
+        if (submitBtn) submitBtn.addEventListener('click', handleSubmit);
+        if (input) input.addEventListener('keydown', handleKey);
+        if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
+
+        return () => {
+            if (submitBtn) submitBtn.removeEventListener('click', handleSubmit);
+            if (input) input.removeEventListener('keydown', handleKey);
+            if (cancelBtn) cancelBtn.removeEventListener('click', closeModal);
+        };
+    }, [authenticated]);
 
     const handlePublicarVaga = (novaVagaData) => {
         const novaVaga = {
@@ -342,6 +407,11 @@ function GerenciamentoVagas() {
     };
 
     const handleCriarVagaClick = () => {
+        if (!authenticated) {
+            const modal = document.getElementById('companyPasswordModal');
+            if (modal) modal.style.display = 'flex';
+            return;
+        }
         setViewMode('create');
         setSelectedVagaId(null); // Desseleciona qualquer vaga ao criar uma nova
     };

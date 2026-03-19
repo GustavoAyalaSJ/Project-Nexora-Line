@@ -207,13 +207,29 @@ function PaginaDeVagas() {
 
     React.useEffect(() => {
         setVagas(loadVagasFromStorage());
+
         const handleStorageChange = (e) => {
             if (e.key === "nexoraVagas") {
                 setVagas(loadVagasFromStorage());
             }
         };
+
+        const handleCustomUpdate = (e) => {
+            // Evento disparado internamente quando salvarmos vagas no mesmo contexto
+            if (e && e.detail && Array.isArray(e.detail.vagas)) {
+                setVagas(e.detail.vagas);
+            } else {
+                setVagas(loadVagasFromStorage());
+            }
+        };
+
         window.addEventListener("storage", handleStorageChange);
-        return () => window.removeEventListener("storage", handleStorageChange);
+        window.addEventListener("nexoraVagasUpdated", handleCustomUpdate);
+
+        return () => {
+            window.removeEventListener("storage", handleStorageChange);
+            window.removeEventListener("nexoraVagasUpdated", handleCustomUpdate);
+        };
     }, []);
 
     const [filtros, setFiltros] = React.useState({
