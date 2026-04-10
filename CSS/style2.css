@@ -14,7 +14,7 @@ body {
 }
 
 .background-container {
-    background-image: url('Fundo2.jpg');
+    background-image: url('Fundo2.webp');
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -350,6 +350,29 @@ body {
     background-color: #fff;
     border-radius: 4px;
     flex-shrink: 0;
+}
+
+.favorito-logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background-color: #fff;
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+.favorito-logo-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    color: #999;
+    font-size: 1.5rem;
 }
 
 .favorito-info {

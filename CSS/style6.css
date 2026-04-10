@@ -13,7 +13,7 @@ body {
 }
 
 .background-container {
-    background-image: url('Fundo5.jpg');
+    background-image: url('Fundo5.webp');
     display: flex;
     flex-direction: column;
     background-repeat: no-repeat;
@@ -265,4 +265,248 @@ body {
 
 .box-button:hover {
     background-color: #fff;
+}
+/* Media Queries */
+
+/* Tablets (768px to 1024px) */
+@media (max-width: 1024px) {
+    .dashboard-container {
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        padding: 0 15px;
+    }
+
+    .main-content {
+        padding: 1.5rem;
+    }
+
+    .messageWelcome {
+        font-size: 1.8rem;
+        margin-bottom: 30px;
+    }
+
+    .dashboard-card h2 {
+        font-size: 1.2rem;
+    }
+}
+
+/* Tablets - Smaller (600px to 768px) */
+@media (max-width: 768px) {
+    .cabe�alho {
+        padding: 0.8rem 1.5rem;
+        flex-wrap: wrap;
+    }
+
+    .logotipo img {
+        height: 35px;
+    }
+
+    .nav-menu {
+        flex-wrap: wrap;
+        gap: 0.8rem;
+        margin-left: auto;
+        order: 3;
+        width: 100%;
+        margin-top: 0.8rem;
+    }
+
+    .nav-button {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+    }
+
+    .search-bar {
+        display: none;
+    }
+
+    #react-userActions {
+        margin-left: auto;
+        order: 2;
+    }
+
+    .header-user-actions {
+        flex-direction: row;
+    }
+
+    .dropdown-content {
+        width: calc(100vw - 30px);
+        right: -15px;
+    }
+
+    .main-content {
+        padding: 1rem;
+        max-width: 100%;
+    }
+
+    .dashboard-container {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        padding: 0 10px;
+    }
+
+    .messageWelcome {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+    }
+
+    .dashboard-card {
+        padding: 16px;
+        min-height: auto;
+    }
+
+    .card-vagas, .card-noticias {
+        min-height: 250px;
+    }
+
+    .dashboard-column-stacked {
+        gap: 12px;
+    }
+
+    .box-button {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .card-insights {
+        min-height: 100px;
+    }
+}
+
+/* Mobile devices (up to 600px) */
+@media (max-width: 600px) {
+    body {
+        overflow-y: auto;
+    }
+
+    .background-container {
+        min-height: auto;
+    }
+
+    .cabe�alho {
+        padding: 0.6rem 0.8rem;
+        gap: 0.5rem;
+    }
+
+    .logotipo img {
+        height: 30px;
+    }
+
+    #react-userActions {
+        order: 2;
+        margin-left: auto;
+    }
+
+    .nav-menu {
+        order: 3;
+        width: 100%;
+        margin-top: 0.6rem;
+        margin-left: 0;
+        gap: 0.5rem;
+    }
+
+    .nav-button {
+        flex: 1;
+        padding: 0.4rem 0.5rem;
+        font-size: 0.7rem;
+    }
+
+    .icon-button {
+        font-size: 1.3rem;
+    }
+
+    .main-content {
+        padding: 0.8rem 0.5rem;
+        flex-grow: 1;
+    }
+
+    .messageWelcome {
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+    }
+
+    .dashboard-container {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        padding: 0;
+    }
+
+    .dashboard-card {
+        padding: 12px;
+        border-radius: 4px;
+    }
+
+    .dashboard-card h2 {
+        font-size: 1rem;
+        margin-bottom: 8px;
+    }
+
+    .card-vagas, .card-noticias {
+        min-height: 200px;
+    }
+
+    .card-insights, .card-placeholder {
+        min-height: 80px;
+    }
+
+    .dropdown-content {
+        width: calc(100vw - 20px);
+        padding: 1rem;
+        right: -10px;
+    }
+
+    .close-dropdown {
+        margin-top: 0.8rem;
+        padding: 0.4rem 0.8rem;
+    }
+
+    .box-button {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.8rem;
+    }
+
+    .card-noticias-bottom p {
+        font-size: 0.75rem;
+    }
+}
+
+/* Extra small devices (up to 360px) */
+@media (max-width: 360px) {
+    .cabe�alho {
+        padding: 0.5rem 0.4rem;
+    }
+
+    .logotipo img {
+        height: 25px;
+    }
+
+    .nav-button {
+        font-size: 0.65rem;
+        padding: 0.3rem 0.4rem;
+    }
+
+    .icon-button {
+        font-size: 1.1rem;
+    }
+
+    .messageWelcome {
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+
+    .main-content {
+        padding: 0.5rem;
+    }
+
+    .dashboard-card {
+        padding: 8px;
+    }
+
+    .dashboard-card h2 {
+        font-size: 0.9rem;
+    }
+
+    .box-button {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.7rem;
+    }
 }
