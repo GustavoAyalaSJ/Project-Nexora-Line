@@ -24,3 +24,8 @@ Nexora Line (Originalmente Atlas Developers) é um projeto para criação de um 
 • Modernização na tela de login e cadastro;
 • Algumas pequenas modificações em Modais.
 
+--- Version 0.3.5 ---
+• Melhoria de optimização e remoção de conteúdo não utilizado;
+• Adição de conteúdos que estavam na lista de coisas incompletas.
+
+

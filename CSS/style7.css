@@ -12,7 +12,7 @@ body {
 }
 
 .background-container {
-    background-image: url('Fundo4.jpg');
+    background-image: url('Fundo4.webp');
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -190,3 +190,237 @@ body {
   font-size: 0.9rem;
 }
 
+
+/* Empresa Perfil Styles */
+.empresa-perfil-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.perfil-header {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.perfil-avatar {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    color: white;
+    flex-shrink: 0;
+}
+
+.perfil-info h2 {
+    font-size: 28px;
+    margin-bottom: 5px;
+}
+
+.perfil-info p {
+    color: #666;
+    font-size: 16px;
+}
+
+.perfil-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 20px;
+}
+
+.perfil-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+    background: #f9f9f9;
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-editar {
+    background: transparent;
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s ease;
+}
+
+.btn-editar:hover {
+    background: #f4f4f4;
+    border-color: #999;
+}
+
+.card-content {
+    padding: 20px;
+}
+
+.card-content p {
+    margin: 12px 0;
+    line-height: 1.6;
+}
+
+.card-content a {
+    color: #667eea;
+    text-decoration: none;
+}
+
+.card-content a:hover {
+    text-decoration: underline;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #333;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 14px;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 5px rgba(102, 126, 234, 0.2);
+}
+
+.btn-salvar {
+    background-color: #667eea;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.btn-salvar:hover {
+    background-color: #764ba2;
+}
+
+.redes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.rede-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background: #f9f9f9;
+    border-radius: 4px;
+    color: #667eea;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.rede-link:hover {
+    background-color: #f0f0f0;
+}
+
+.rede-link i {
+    font-size: 18px;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .perfil-header {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .perfil-info h2 {
+        font-size: 22px;
+    }
+
+    .perfil-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .empresa-perfil-container {
+        margin: 20px auto;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .perfil-avatar {
+        width: 80px;
+        height: 80px;
+        font-size: 36px;
+    }
+
+    .perfil-header {
+        padding: 15px;
+        gap: 15px;
+    }
+
+    .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .btn-editar {
+        align-self: flex-start;
+    }
+
+    .card-content {
+        padding: 15px;
+    }
+}

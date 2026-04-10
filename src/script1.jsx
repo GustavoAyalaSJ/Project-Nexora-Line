@@ -64,12 +64,18 @@ function ModaisNexora() {
     const [mostrarTermos, setMostrarTermos] = React.useState(false);
     const [mostrarPolitica, setMostrarPolitica] = React.useState(false);
     const [mostrarSenha, setMostrarSenha] = React.useState(false);
+    const [mostrarRecuperacaoEmail, setMostrarRecuperacaoEmail] = React.useState(false);
+    const [mostrarRecuperacaoSenha, setMostrarRecuperacaoSenha] = React.useState(false);
     const [papelSelecionado, setPapelSelecionado] = React.useState(null);
 
     const handleAbrirTermos = () => setMostrarTermos(true);
     const handleAbrirPolítica = () => setMostrarPolitica(true);
     const handleFecharTermos = () => setMostrarTermos(false);
     const handleFecharPolitica = () => setMostrarPolitica(false);
+    const handleAbrirRecuperacaoEmail = () => setMostrarRecuperacaoEmail(true);
+    const handleFecharRecuperacaoEmail = () => setMostrarRecuperacaoEmail(false);
+    const handleAbrirRecuperacaoSenha = () => setMostrarRecuperacaoSenha(true);
+    const handleFecharRecuperacaoSenha = () => setMostrarRecuperacaoSenha(false);
 
     const handleAbrirForm = () => {
         setModalAberto('formulário');
@@ -148,7 +154,7 @@ function ModaisNexora() {
                     >
                         <label>Email:</label>
                         <input type="email" placeholder="Digite seu email" />
-                        <a href="#">Esqueceu o email?</a>
+                        <a onClick={handleAbrirRecuperacaoEmail} style={{ cursor: 'pointer' }}>Esqueceu o email?</a>
 
                         <label>Senha:</label>
                         <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -162,7 +168,7 @@ function ModaisNexora() {
                                 )}
                             </span>
                         </div>
-                        <a href="#">Esqueceu a senha?</a>
+                        <a onClick={handleAbrirRecuperacaoSenha} style={{ cursor: 'pointer' }}>Esqueceu a senha?</a>
 
                         <button type="submit">LOGAR</button>
                         <button type="button" onClick={handleAbrirCadastro}>CADASTRE-SE</button>
@@ -192,6 +198,44 @@ function ModaisNexora() {
                         <button onClick={handleFecharPolitica}>X</button>
                         <h2>Política de Privacidade</h2>
                         <p>PLACEHOLDER</p>
+                    </div>
+                </div>
+            )}
+
+            {mostrarRecuperacaoEmail && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <button onClick={handleFecharRecuperacaoEmail}>X</button>
+                        <h2>Recuperar Email</h2>
+                        <form onSubmit={(e) => {
+                            e.preventDefault();
+                            alert('Um link de recuperação foi enviado para o email cadastrado.');
+                            handleFecharRecuperacaoEmail();
+                        }}>
+                            <label>CPF ou CNPJ:</label>
+                            <input type="text" placeholder="Digite seu CPF ou CNPJ" required />
+                            <label>Data de Nascimento (ou Fundação):</label>
+                            <input type="date" required />
+                            <button type="submit">Enviar Link de Recuperação</button>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {mostrarRecuperacaoSenha && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <button onClick={handleFecharRecuperacaoSenha}>X</button>
+                        <h2>Recuperar Senha</h2>
+                        <form onSubmit={(e) => {
+                            e.preventDefault();
+                            alert('Um link de recuperação foi enviado para seu email.');
+                            handleFecharRecuperacaoSenha();
+                        }}>
+                            <label>Email:</label>
+                            <input type="email" placeholder="Digite seu email cadastrado" required />
+                            <button type="submit">Enviar Link de Recuperação</button>
+                        </form>
                     </div>
                 </div>
             )}

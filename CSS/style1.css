@@ -73,7 +73,7 @@ body {
   width: 50%;
   background:
     linear-gradient(90deg, rgb(21, 18, 85) 35%, rgba(95, 95, 153, 1) 100%),
-    url('FundoLeftGlobal.png');
+    url('FundoLeftGlobal.webp');
   color: white;
   padding: 60px;
   position: relative;
@@ -115,7 +115,7 @@ body {
 /* Coluna da Direita */
 #react-containerImage-right {
   width: 50%;
-  background-image: url('FundoGlobal.png');
+  background-image: url('FundoGlobal.webp');
   background-size: cover;
   background-repeat: no-repeat;
   min-height: 400px;

@@ -288,16 +288,33 @@ function FormularioCriacaoVaga({ onCancel, onPublicar }) {
 
 function GerenciamentoVagas() {
     const [vagasPublicadas, setVagasPublicadas] = React.useState(getStoredVagas);
-    const [viewMode, setViewMode] = React.useState('list'); // 'list', 'create', 'details'
-
+    const [viewMode, setViewMode] = React.useState('list');
     const [selectedVagaId, setSelectedVagaId] = React.useState(null);
     const [authenticated, setAuthenticated] = React.useState(() => !!localStorage.getItem('nexoraCompanyAuthenticated'));
+    const [filtroAberto, setFiltroAberto] = React.useState(false);
+    const [filtros, setFiltros] = React.useState({
+        titulo: '',
+        estado: '',
+        tipo: '',
+        status: ''
+    });
 
     const nextId = React.useMemo(() => {
         return vagasPublicadas.length > 0
             ? Math.max(...vagasPublicadas.map(v => v.id)) + 1
             : 1;
     }, [vagasPublicadas]);
+
+    const vagasFiltradas = React.useMemo(() => {
+        return vagasPublicadas.filter(vaga => {
+            const tituloMatch = !filtros.titulo || vaga.title.toLowerCase().includes(filtros.titulo.toLowerCase());
+            const estadoMatch = !filtros.estado || vaga.state === filtros.estado;
+            const tipoMatch = !filtros.tipo || vaga.serviceType === filtros.tipo;
+            const statusMatch = !filtros.status || vaga.status === filtros.status;
+            
+            return tituloMatch && estadoMatch && tipoMatch && statusMatch;
+        });
+    }, [vagasPublicadas, filtros]);
 
     React.useEffect(() => {
         const modal = document.getElementById('companyPasswordModal');
@@ -413,7 +430,28 @@ function GerenciamentoVagas() {
             return;
         }
         setViewMode('create');
-        setSelectedVagaId(null); // Desseleciona qualquer vaga ao criar uma nova
+        setSelectedVagaId(null);
+    };
+
+    const handleFiltroChange = (e) => {
+        const { name, value } = e.target;
+        setFiltros(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    const handleLimparFiltros = () => {
+        setFiltros({
+            titulo: '',
+            estado: '',
+            tipo: '',
+            status: ''
+        });
+    };
+
+    const handleToggleFiltro = () => {
+        setFiltroAberto(!filtroAberto);
     };
 
     const handleCancelForm = () => {
@@ -442,12 +480,82 @@ function GerenciamentoVagas() {
                     <section className="vagas-publicadas-section">
                         <div className="section-header">
                             <h2>LISTA DE VAGAS PUBLICADAS</h2>
-                            <button className="filter-button"><i className="bi bi-funnel"></i> FILTRAR <i className="bi bi-chevron-down"></i></button>
+                            <button 
+                                onClick={handleToggleFiltro}
+                                className="filter-button"
+                            >
+                                <i className="bi bi-funnel"></i> FILTRAR <i className="bi bi-chevron-down"></i>
+                            </button>
                         </div>
 
+                        {filtroAberto && (
+                            <div className="filtro-panel">
+                                <h3>Filtros</h3>
+                                <div className="filtro-group">
+                                    <label>Título da Vaga:</label>
+                                    <input 
+                                        type="text" 
+                                        name="titulo"
+                                        value={filtros.titulo}
+                                        onChange={handleFiltroChange}
+                                        placeholder="Digite o título..."
+                                    />
+                                </div>
+
+                                <div className="filtro-group">
+                                    <label>Estado:</label>
+                                    <select 
+                                        name="estado"
+                                        value={filtros.estado}
+                                        onChange={handleFiltroChange}
+                                    >
+                                        <option value="">Todos os estados</option>
+                                        {ESTADOS_DATA.map(e => (
+                                            <option key={e.sigla} value={e.sigla}>{e.nome}</option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                <div className="filtro-group">
+                                    <label>Tipo de Trabalho:</label>
+                                    <select 
+                                        name="tipo"
+                                        value={filtros.tipo}
+                                        onChange={handleFiltroChange}
+                                    >
+                                        <option value="">Todos os tipos</option>
+                                        <option value="remoto">Remoto</option>
+                                        <option value="hibrido">Híbrido</option>
+                                        <option value="presencial">Presencial</option>
+                                    </select>
+                                </div>
+
+                                <div className="filtro-group">
+                                    <label>Status:</label>
+                                    <select 
+                                        name="status"
+                                        value={filtros.status}
+                                        onChange={handleFiltroChange}
+                                    >
+                                        <option value="">Todos os status</option>
+                                        <option value="Ativa">Ativa</option>
+                                        <option value="Inativa">Inativa</option>
+                                        <option value="Pausada">Pausada</option>
+                                    </select>
+                                </div>
+
+                                <button 
+                                    onClick={handleLimparFiltros}
+                                    className="btn-limpar-filtros"
+                                >
+                                    Limpar Filtros
+                                </button>
+                            </div>
+                        )}
+
                         <div className="vagas-list-scroll">
-                            {vagasPublicadas.length > 0 ? (
-                                vagasPublicadas.map(vaga => (
+                            {vagasFiltradas.length > 0 ? (
+                                vagasFiltradas.map(vaga => (
                                     <VagaPublicadaCard
                                         key={vaga.id}
                                         vaga={vaga}
@@ -457,7 +565,12 @@ function GerenciamentoVagas() {
                                     />
                                 ))
                             ) : (
-                                <p className="empty-list-message">Nenhuma vaga publicada ainda. Clique em "Criar Vagas" para começar.</p>
+                                <p className="empty-list-message">
+                                    {vagasPublicadas.length > 0 
+                                        ? 'Nenhuma vaga encontrada com os filtros aplicados.'
+                                        : 'Nenhuma vaga publicada ainda. Clique em "Criar Vagas" para começar.'
+                                    }
+                                </p>
                             )}
                         </div>
                     </section>

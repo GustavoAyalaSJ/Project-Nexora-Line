@@ -118,7 +118,22 @@ function StartDashboardbox() {
                                 <ul className="favoritos-list">
                                     {favoritos.map(vaga => (
                                         <li key={vaga.id} className="favorito-item">
-                                            <img src={vaga.logo} alt={vaga.company} className="favorito-logo" />
+                                            <div className="favorito-logo-container">
+                                                {vaga.logo ? (
+                                                    <img 
+                                                        src={vaga.logo} 
+                                                        alt={vaga.company} 
+                                                        className="favorito-logo"
+                                                        onError={(e) => {
+                                                            e.target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50"%3E%3Crect fill="%23f0f0f0" width="50" height="50"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%23999" font-size="12"%3ELogo%3C/text%3E%3C/svg%3E';
+                                                        }}
+                                                    />
+                                                ) : (
+                                                    <div className="favorito-logo-placeholder">
+                                                        <i className="bi bi-building"></i>
+                                                    </div>
+                                                )}
+                                            </div>
 
                                             <div className="favorito-info">
                                                 <strong>{vaga.title}</strong>
