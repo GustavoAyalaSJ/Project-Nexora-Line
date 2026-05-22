@@ -1,23 +1,21 @@
-O que ficou incompleto no Nexora Line (talvez mexer no futuro):
+Anotações do Nexora Line (Novo Nexora Line):
 
-2. UserPage.html
-- Botão de visualizar/publicar painel de notícias não funciona;
-- Não tem modal de configurações.
+1. Página Introduced (index.html):
+- Layout: Concluído ✓
+O que falta:
+- Adicionar o Media Queries.
 
-3. VagasPage.html
-- Não tem modal de configurações;
+2. Página Usuário (index2.html):
+- Layout: (ainda em produção).
 
-4. PerfilPage.html
-- Não tem modal de configurações.
+3. Página Empresa (index3.html):
+- Layout: (ainda em produção).
 
-5. GerenciamentoVagas.html
-- O botão de "editar vagas" não funciona.
+4. Página Vagas (index4.html):
+- Layout: (ainda em produção).
 
-6. EmpresaPage.html
-- O botão de postar notícias não funciona;
-- O quadro de vagas publicadas não coloca vagas publicadas pela empresa.
+5. Página Profile para Empresas e usuário (index5.html || index7.html):
+- Layout: (ainda em produção).
 
-Banco de Dados Nexora (Futuro):
-
-- Tornar o cadastro de candidato e empresas ser funcional;
-- (outras ideias em breve...)
+6. Página Gerenciamento de Vagas (index6.html):
+- Layout: (ainda em produção).

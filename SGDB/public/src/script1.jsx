@@ -1,328 +1,246 @@
-alert('Atenção caro usuário!');
-alert('Você está acessando um protótipo desenvolvido apenas para fins de demonstração, ele não é 100% operacional.');
-alert('Obrigado pela atenção!');
+const { useState } = React;
 
-function HeaderLinks() {
-    const [modalAberto, setModalAberto] = React.useState(null);
+function Header() {
+    return (
+        <header className="header">
+            <div className="logo">
+                <img src="Assets/Nexora-PurpleLight.png" alt="Nexora logo" />
+            </div>
+            <nav className="nav-links">
+                <a>Suporte</a>
+                <span className="separator">|</span>
+                <a>Termos e Serviços</a>
+            </nav>
+        </header>
+    );
+}
 
-    const handleAbrirTermos = () => setModalAberto('termos');
-    const handleAbrirSuporte = () => setModalAberto('suporte');
-    const handleFecharModal = () => setModalAberto(null);
+function HeroSection() {
+    const [activeModal, setActiveModal] = useState(null);
+    const [showPassword, setShowPassword] = useState(false);
+    const [recoveryType, setRecoveryType] = useState(null);
+
+    const abrirModalSelecao = () => setActiveModal('select');
+    const fecharModal = () => {
+        setActiveModal(null);
+        setRecoveryType(null);
+        setShowPassword(false);
+    };
+
+    const mostrarAvisoDesenvolvimento = (pagina) => {
+        const continuar = window.confirm(
+            'Atenção: Esta é uma aplicação em desenvolvimento e algumas funcionalidades podem não funcionar corretamente.'
+        );
+
+        if (continuar) {
+            window.location.href = pagina;
+        }
+    };
+
+    const loginCandidato = () => {
+        mostrarAvisoDesenvolvimento('index2.html');
+    };
+
+    const loginEmpresa = () => {
+        mostrarAvisoDesenvolvimento('index3.html');
+    };
 
     return (
-        <>
-            <div className="header-links">
-                <a onClick={handleAbrirTermos}>Termos e Serviços</a>
-                <span className="separador">|</span>
-                <a onClick={handleAbrirSuporte} style={{ marginLeft: '10px' }}>Suporte</a>
+        <main className="hero-content">
+            <div className="visual-section">
+                <h1 className="nexora-title">
+                    Nexora <span className="brand-line">Line</span>
+                </h1>
+
+                <p>
+                    Nexora Line é um site profissional no ramo especializado de gerenciamento nas vagas de emprego para
+                    desenvolvedores em TI. Nosso compromisso é com a inovação, oferecendo aos nossos clientes e empresas
+                    ferramentas para facilitar a busca por ambos. Nosso ambiente web é dinâmico, pois, graças à tecnologia temos o
+                    potencial de mudar a busca pelo emprego e dedicação para o futuro. Junte-se a nós!
+                </p>
+
+                <button className="btn-cta" onClick={abrirModalSelecao}>
+                    ACESSAR
+                </button>
             </div>
 
-            {modalAberto === 'termos' && (
-                <div className="modal">
-                    <div className="modal-content">
-                        <button onClick={handleFecharModal}>X</button>
-                        <h2>Termos e Serviços</h2>
-                        <p>PLACEHOLDER</p>
-                    </div>
-                </div>
-            )}
+            {activeModal && (
+                <div className="modal-backdrop" onClick={fecharModal}>
+                    <div className="modal-wrapper" onClick={(e) => e.stopPropagation()}>
 
-            {modalAberto === 'suporte' && (
-                <div className="modal">
-                    <div className="modal-content">
-                        <button onClick={handleFecharModal}>X</button>
-                        <h2>Suporte</h2>
-                        <form>
-                            <label>Nome:</label>
-                            <input type="text" placeholder="Informe seu nome completo" />
-                            <label>Email:</label>
-                            <input type="email" placeholder="Informe seu email" />
-                            <label>Número:</label>
-                            <input type="tel" placeholder="Informe seu número de telefone" maxLength="11" />
-                            <label>Problema:</label>
-                            <select>
-                                <option>Selecione</option>
-                                <option>Problema 1</option>
-                                <option>Problema 2</option>
-                                <option>Problema 3</option>
-                            </select>
-                            <label>Mensagem:</label>
-                            <textarea rows="5" maxLength="500"></textarea>
-                            <button type="submit">Enviar</button>
-                            <button type="reset">Limpar</button>
-                        </form>
+                        {activeModal === 'select' && (
+                            <div className="modal-box modal-selection">
+                                <button className="modal-close-btn" onClick={fecharModal}>
+                                    <i className="bi bi-x-lg"></i>
+                                </button>
+                                <h3>Você está cadastrado como?</h3>
+                                <div className="selection-options">
+                                    <button
+                                        className="btn-select-type company-border"
+                                        onClick={() => setActiveModal('empresa')}
+                                    >
+                                        EMPRESA
+                                    </button>
+                                    <span className="selection-or">ou</span>
+                                    <button
+                                        className="btn-select-type candidate-border"
+                                        onClick={() => setActiveModal('candidato')}
+                                    >
+                                        CANDIDATO
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
+                        {activeModal === 'candidato' && !recoveryType && (
+                            <div className="modal-box modal-form candidate-accent">
+                                <button className="modal-close-btn" onClick={fecharModal}>
+                                    <i className="bi bi-x-lg"></i>
+                                </button>
+                                <p className="modal-headline">Você selecionou: <strong>CANDIDATO</strong></p>
+
+                                <div className="form-group">
+                                    <label>Email:</label>
+                                    <input type="text" placeholder="Digite o seu email" />
+                                    <span className="field-link" onClick={() => setRecoveryType('email')}>Esqueceu o email?</span>
+                                </div>
+
+                                <div className="form-group">
+                                    <label>Senha:</label>
+                                    <div className="input-password-container">
+                                        <input type={showPassword ? "text" : "password"} autoComplete="off" placeholder="Digite o sua senha" />
+                                        <span className="password-toggle" onClick={() => setShowPassword(!showPassword)}>
+                                            <i className={showPassword ? "bi bi-eye-slash-fill" : "bi bi-eye-fill"}></i>
+                                        </span>
+                                    </div>
+                                    <span className="field-link" onClick={() => setRecoveryType('senha')}>Esqueceu a senha?</span>
+                                </div>
+
+                                <div className="modal-warning">
+                                    <i className="bi bi-exclamation-triangle"></i>
+                                    <p>Nexora <strong>recomenda</strong> fazer login para maiores <strong>acima</strong> de 18 anos, segundo a legislação brasileira (art. 7º, inciso XXXIII, da Constituição Federal).</p>
+                                </div>
+
+                                <p className="modal-terms">
+                                    Ao conectar-se com este site, você estará concordando com nossos <a href="#terms">Termos de Uso e Serviço</a>.
+                                </p>
+
+                                <div className="modal-actions">
+                                    <button className="btn-modal-action btn-submit-login" onClick={loginCandidato}>LOGAR</button>
+                                    <button className="btn-modal-action btn-register">CADASTRE-SE</button>
+                                </div>
+                            </div>
+                        )}
+
+                        {activeModal === 'empresa' && !recoveryType && (
+                            <div className="modal-box modal-form company-accent">
+                                <button className="modal-close-btn" onClick={fecharModal}>
+                                    <i className="bi bi-x-lg"></i>
+                                </button>
+                                <p className="modal-headline">Você selecionou: <strong>EMPRESA</strong></p>
+
+                                <div className="form-group">
+                                    <label>Email:</label>
+                                    <input type="text" placeholder="Digite o seu email" />
+                                </div>
+
+                                <div className="form-group">
+                                    <label>Senha:</label>
+                                    <div className="input-password-container">
+                                        <input type={showPassword ? "text" : "password"} autoComplete="off" placeholder="Digite o sua senha" />
+                                        <span className="password-toggle" onClick={() => setShowPassword(!showPassword)}>
+                                            <i className={showPassword ? "bi bi-eye-slash-fill" : "bi bi-eye-fill"}></i>
+                                        </span>
+                                    </div>
+                                    <span className="field-link" onClick={() => setRecoveryType('senha')}>Esqueceu a senha?</span>
+                                </div>
+
+                                <div className="modal-warning">
+                                    <i className="bi bi-exclamation-triangle"></i>
+                                    <p>Nexora <strong>recomenda</strong> o login <strong>através</strong> de um e-mail oficial da empresa ou de e-mail fornecido pela mesma, e-mails pessoais não são aceitos!</p>
+                                </div>
+
+                                <p className="modal-terms">
+                                    Ao conectar-se com este site, você estará concordando com nossos <a href="#terms">Termos de Uso e Serviço</a>.
+                                </p>
+
+                                <div className="modal-actions">
+                                    <button className="btn-modal-action btn-submit-login" onClick={loginEmpresa}>ENTRAR</button>
+                                    <button className="btn-modal-action btn-register">CADASTRE-SE</button>
+                                </div>
+                            </div>
+                        )}
+
+                        {recoveryType && (
+                            <div className="modal-box modal-form company-accent">
+                                <button
+                                    className="modal-close-btn"
+                                    onClick={() => setRecoveryType(null)}
+                                >
+                                    <i className="bi bi-x-lg"></i>
+                                </button>
+
+                                <p className="modal-headline">
+                                    Funcionalidade em <strong>Desenvolvimento</strong>
+                                </p>
+
+                                <div className="modal-warning">
+                                    <i className="bi bi-tools"></i>
+
+                                    <p>
+                                        O sistema de recuperação de{' '}
+                                        <strong>
+                                            {recoveryType === 'email' ? 'e-mail' : 'senha'}
+                                        </strong>{' '}
+                                        ainda está em desenvolvimento e poderá ser implementado em versões futuras da Nexora Line.
+                                    </p>
+                                </div>
+
+                                <p className="modal-terms">
+                                    Esta área atualmente possui apenas finalidade demonstrativa para apresentação visual da interface.
+                                </p>
+
+                                <div className="modal-actions">
+                                    <button
+                                        className="btn-modal-action btn-submit-login"
+                                        onClick={() => setRecoveryType(null)}
+                                    >
+                                        ENTENDI
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
                     </div>
                 </div>
             )}
-        </>
+        </main>
     );
 }
 
-
-function ModaisNexora() {
-    const [modalAberto, setModalAberto] = React.useState(null);
-    const [mostrarTermos, setMostrarTermos] = React.useState(false);
-    const [mostrarPolitica, setMostrarPolitica] = React.useState(false);
-    const [mostrarSenha, setMostrarSenha] = React.useState(false);
-    const [mostrarRecuperacaoEmail, setMostrarRecuperacaoEmail] = React.useState(false);
-    const [mostrarRecuperacaoSenha, setMostrarRecuperacaoSenha] = React.useState(false);
-    const [papelSelecionado, setPapelSelecionado] = React.useState(null);
-
-    const handleAbrirTermos = () => setMostrarTermos(true);
-    const handleAbrirPolítica = () => setMostrarPolitica(true);
-    const handleFecharTermos = () => setMostrarTermos(false);
-    const handleFecharPolitica = () => setMostrarPolitica(false);
-    const handleAbrirRecuperacaoEmail = () => setMostrarRecuperacaoEmail(true);
-    const handleFecharRecuperacaoEmail = () => setMostrarRecuperacaoEmail(false);
-    const handleAbrirRecuperacaoSenha = () => setMostrarRecuperacaoSenha(true);
-    const handleFecharRecuperacaoSenha = () => setMostrarRecuperacaoSenha(false);
-
-    const handleAbrirForm = () => {
-        setModalAberto('formulário');
-        setPapelSelecionado(null);
-    };
-    const handleFecharModal = () => {
-        setModalAberto(null);
-        setPapelSelecionado(null);
-    };
-
-    const handleSelecionarPapel = (papel) => {
-        setPapelSelecionado(papel);
-        setModalAberto(null);
-    };
-
-    const handleAbrirCadastro = () => {
-        if (papelSelecionado === 'candidato') {
-            setModalAberto('cadastro_candidato');
-        } else if (papelSelecionado === 'empresa') {
-            setModalAberto('cadastro_empresa');
-        }
-    };
-
-    const buttonContainer = document.getElementById('react-button-underTextleft');
-    const formSelectionContainer = document.getElementById('react-form-label');
-
-    // Efeito de Blur Condicional
-    React.useEffect(() => {
-        const container = document.querySelector('.background-container');
-        if (container) {
-            const isLoginOpen = papelSelecionado !== null;
-            const isRegisterOpen = modalAberto === 'cadastro_candidato' || modalAberto === 'cadastro_empresa';
-
-            const blurAtivo = isLoginOpen || isRegisterOpen;
-
-            container.classList.toggle('blurred', blurAtivo);
-        }
-    }, [modalAberto, papelSelecionado]);
-
+function Footer() {
     return (
-        <>
-            {buttonContainer && !modalAberto && ReactDOM.createPortal(
-                <a onClick={handleAbrirForm} className="btn-landing">ACESSAR</a>,
-                buttonContainer
-            )}
-
-            {formSelectionContainer && modalAberto === 'formulário' && ReactDOM.createPortal(
-                <div className="modal-card">
-                    <h2>Você está cadastrado como?</h2>
-                    <a onClick={() => handleSelecionarPapel('candidato')}
-                        className={`role-candidato ${papelSelecionado === 'candidato' ? 'selected' : ''}`}>CANDIDATO</a>
-                    <p>ou</p>
-                    <a onClick={() => handleSelecionarPapel('empresa')}
-                        className={`role-empresa ${papelSelecionado === 'empresa' ? 'selected' : ''}`}>EMPRESA</a>
-                </div>,
-                formSelectionContainer
-            )}
-
-            {papelSelecionado && (
-                <div className="login-card">
-                    <button onClick={handleFecharModal}>X</button>
-                    <p>Você selecionou: <strong>{papelSelecionado.toUpperCase()}</strong></p>
-                    <div className="warning-box">
-                        Nexora recomenda {papelSelecionado === 'empresa' ? 'usar email oficial da empresa' : 'login para maiores de 18 anos'}.
-                    </div>
-                    <form
-                        autoComplete="off"
-                        onSubmit={(e) => {
-                            e.preventDefault();
-                            if (papelSelecionado === 'candidato') {
-                                window.location.href = "UserPage.html";
-                            } else if (papelSelecionado === 'empresa') {
-                                window.location.href = "EmpresaPage.html";
-                            }
-                        }}
-                    >
-                        <label>Email:</label>
-                        <input type="email" placeholder="Digite seu email" />
-                        <a onClick={handleAbrirRecuperacaoEmail} style={{ cursor: 'pointer' }}>Esqueceu o email?</a>
-
-                        <label>Senha:</label>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <input type={mostrarSenha ? "text" : "password"} placeholder="Digite sua senha" />
-                            <span onClick={() => setMostrarSenha(!mostrarSenha)}
-                                style={{ marginLeft: '10px', cursor: 'pointer' }}>
-                                {mostrarSenha ? (
-                                    <i className="bi bi-eye-slash-fill"></i>
-                                ) : (
-                                    <i className="bi bi-eye-fill"></i>
-                                )}
-                            </span>
-                        </div>
-                        <a onClick={handleAbrirRecuperacaoSenha} style={{ cursor: 'pointer' }}>Esqueceu a senha?</a>
-
-                        <button type="submit">LOGAR</button>
-                        <button type="button" onClick={handleAbrirCadastro}>CADASTRE-SE</button>
-
-                        <p>
-                            Ao conectar-se com este site, você concorda com nossos
-                            <a onClick={handleAbrirTermos} className="loginlinks"> Termos de Uso </a> e
-                            <a onClick={handleAbrirPolítica} className="loginlinks"> Política de Privacidade</a>.
-                        </p>
-                    </form>
-                </div>
-            )}
-
-            {mostrarTermos && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
-                        <button onClick={handleFecharTermos}>X</button>
-                        <h2>Termos de Uso</h2>
-                        <p>PLACEHOLDER</p>
-                    </div>
-                </div>
-            )}
-
-            {mostrarPolitica && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
-                        <button onClick={handleFecharPolitica}>X</button>
-                        <h2>Política de Privacidade</h2>
-                        <p>PLACEHOLDER</p>
-                    </div>
-                </div>
-            )}
-
-            {mostrarRecuperacaoEmail && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
-                        <button onClick={handleFecharRecuperacaoEmail}>X</button>
-                        <h2>Recuperar Email</h2>
-                        <form onSubmit={(e) => {
-                            e.preventDefault();
-                            alert('Um link de recuperação foi enviado para o email cadastrado.');
-                            handleFecharRecuperacaoEmail();
-                        }}>
-                            <label>CPF ou CNPJ:</label>
-                            <input type="text" placeholder="Digite seu CPF ou CNPJ" required />
-                            <label>Data de Nascimento (ou Fundação):</label>
-                            <input type="date" required />
-                            <button type="submit">Enviar Link de Recuperação</button>
-                        </form>
-                    </div>
-                </div>
-            )}
-
-            {mostrarRecuperacaoSenha && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
-                        <button onClick={handleFecharRecuperacaoSenha}>X</button>
-                        <h2>Recuperar Senha</h2>
-                        <form onSubmit={(e) => {
-                            e.preventDefault();
-                            alert('Um link de recuperação foi enviado para seu email.');
-                            handleFecharRecuperacaoSenha();
-                        }}>
-                            <label>Email:</label>
-                            <input type="email" placeholder="Digite seu email cadastrado" required />
-                            <button type="submit">Enviar Link de Recuperação</button>
-                        </form>
-                    </div>
-                </div>
-            )}
-
-            {modalAberto === 'cadastro_candidato' && (
-                <div className="login-card">
-                    <button onClick={handleFecharModal}>X</button>
-                    <p>Cadastro selecionado: <strong>CANDIDATO</strong></p>
-                    <form onSubmit={(e) => {
-                        e.preventDefault();
-                        handleFecharModal();
-                        setModalAberto('verificacao');
-                        autoComplete = "off";
-                        window.location.href = "UserPage.html";
-                    }}>
-                        <label>Nome Completo:</label>
-                        <input type="text" placeholder="Seu nome" required />
-                        <div className="linha-dupla">
-                            <div>
-                                <label>Data:</label>
-                                <input type="text" placeholder="--/--/----" required />
-                            </div>
-                            <div>
-                                <label>CPF:</label>
-                                <input type="text" placeholder="000.000.000.00" required />
-                            </div>
-                        </div>
-                        <div className="linha-dupla">
-                            <div>
-                                <label>CEP:</label>
-                                <input type="text" placeholder="00000-000" required />
-                            </div>
-                            <div>
-                                <label>Celular:</label>
-                                <input type="text" placeholder="00-00000-0000" required />
-                            </div>
-                        </div>
-                        <label>Email:</label>
-                        <input type="email" placeholder="email@seuemail.com" required />
-                        <label>Senha:</label>
-                        <input type="password" placeholder="Crie uma senha" required />
-                        <label>Confirmar Senha:</label>
-                        <input type="password" placeholder="Confirmar senha" required />
-                        <button className="FinalizarCadastro" type="submit">FINALIZAR CADASTRO</button>
-                    </form>
-                    <a className="tenhoConta" onClick={() => { handleFecharModal(); setPapelSelecionado('candidato'); }}>
-                        Já tenho uma conta
-                    </a>
-                </div>
-            )}
-
-            {modalAberto === 'cadastro_empresa' && (
-                <div className="login-card">
-                    <button onClick={handleFecharModal}>X</button>
-                    <p>Cadastro selecionado: <strong>EMPRESA</strong></p>
-                    <form onSubmit={(e) => {
-                        e.preventDefault();
-                        handleFecharModal();
-                        autoComplete = "off";
-                        window.location.href = "EmpresaPage.html";
-                    }}>
-                        <label>Nome da Empresa:</label>
-                        <input type="text" placeholder="Nome oficial da Empresa" required />
-                        <label>CNPJ:</label>
-                        <input type="text" placeholder="00.000.000/0001-00" required />
-                        <label>Endereço Empresarial:</label>
-                        <input type="text" placeholder="Endereço Empresarial" required />
-                        <label>CEP:</label>
-                        <input type="text" placeholder="00000-000" required />
-                        <label>Email Comercial:</label>
-                        <input type="email" placeholder="email@suaempresa.com" required />
-                        <label>Senha:</label>
-                        <input type="password" placeholder="Crie uma senha" required />
-                        <label>Confirmar Senha:</label>
-                        <input type="password" placeholder="Confirmar senha" required />
-                        <button className="FinalizarCadastro" type="submit">FINALIZAR CADASTRO</button>
-                    </form>
-                    <a className="tenhoConta" onClick={() => { handleFecharModal(); setPapelSelecionado('empresa'); }}>
-                        Já tenho uma conta
-                    </a>
-                </div>
-            )}
-        </>
+        <footer className="footer">
+            <p>Nexora Line © 2025 - Todos os direitos reservados </p>
+            <span className="separator-footer">|</span>
+            <div className="footer-links">
+                <a href="#perguntas">Perguntas Frequentes</a> - <a href="#">Contato</a>
+            </div>
+        </footer>
     );
 }
 
+function App() {
+    return (
+        <div className="app-container">
+            <Header />
+            <div className="hero-wrapper">
+                <HeroSection />
+            </div>
+            <Footer />
+        </div>
+    );
+}
 
-// Renderização
-ReactDOM.createRoot(document.getElementById('react-header-links')).render(<HeaderLinks />);
-ReactDOM.createRoot(document.getElementById('root')).render(<ModaisNexora />);
+const rootElement = document.getElementById('root');
+ReactDOM.createRoot(rootElement).render(<App />);
