@@ -1,4 +1,4 @@
-# Histórico de Versões (Changelog) - Nexora Line
+# Histórico de Versões (Changelog) - Nexora Line V0.3.6
 
 O Nexora Line é uma plataforma moderna e tecnológica desenhada para conectar empresas e talentos de tecnologia (Front-end, Back-end, Analistas de TI, etc.) por todo o Brasil. Abaixo está o registro linear da evolução do nosso ecossistema.
 
