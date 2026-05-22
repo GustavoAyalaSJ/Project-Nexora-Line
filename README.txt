@@ -1,31 +1,36 @@
-Nexora Line é um projeto para criação de um site de recrutamento para desenvolvedores (front, back-end, analista de TI, etc.) pelo Brasil, onde o site está sendo construído para uma interface moderna, tecnológica e amigável para empresas e candidatos. 
+# 🚀 Nexora Line - Changelog
 
-==== NEXORA LINE CHANGELOGS ====
+O **Nexora Line** é uma plataforma de recrutamento inovadora, focada em conectar talentos tech a empresas em todo o Brasil. Abaixo, detalhamos a jornada de desenvolvimento e as evoluções do sistema.
 
---- Version 0 ---
-• Remasterização do antigo Atlas Developers aplicando uma nova interface;
-• Criação dos primeiros designs;
-• Adição do React para organizar a estrutura do site em separação funcional.
+---
 
---- Version 0.1 ---
-• Finalização dos primeiros testes de React no site;
-• Ajuste no CSS nas primeiras páginas;
-• Mudanças nos Assets do site e adição de novas funções.
+## 🛠 [0.3.5] - Estabilização & Performance
+*   **Otimização Geral:** Refatoração de código para melhor performance e remoção de componentes obsoletos.
+*   **Conclusão de Backlog:** Integração de funcionalidades que estavam pendentes na lista de desenvolvimento.
 
---- Version 0.2 ---
-• Criação da página de perfil e portifólio;
-• Ajuste no Java Script XML presente na página User e Vagas;
-• Adição de novos modais 'Placeholders' em outras partes do site;
-• Ajuste no CSS nas primeiras páginas.
+## 🏢 [0.3.2] - Ecossistema para Empresas & UI Modern
+*   **Módulo Empresarial:** Lançamento das páginas exclusivas para recrutadores (`EmpresaPage`, `GerenciamentoDeVagas` e `PerfilEmpresa`).
+*   **Refino Visual:** Melhorias significativas no CSS das páginas `IntroducedPage` e `VagasPage` (Candidato).
+*   **Autenticação:** Modernização completa da interface de Login e Cadastro.
+*   **Componentes:** Ajustes finos e polimento em diversos Modais do sistema.
 
---- Version 0.3.2 ---
-• Adição de páginas exclusivas para empresas (EmpresaPage, GerenciamentodeVagas e PerfilEmpresa);
-• Melhoria no CSS da página IntroducedPage e VagasPage (Candidato);
-• Modernização na tela de login e cadastro;
-• Algumas pequenas modificações em Modais.
+## 👤 [0.2.0] - Perfil & Experiência do Usuário
+*   **Portfólio:** Criação da página de Perfil e Portfólio do candidato.
+*   **Refatoração JSX:** Ajustes estruturais no JavaScript XML das páginas `User` e `Vagas`.
+*   **Placeholders:** Adição de novos modais temporários (placeholders) para expansões futuras.
+*   **CSS:** Ajustes de layout e responsividade nas páginas iniciais.
 
---- Version 0.3.5 ---
-• Melhoria de optimização e remoção de conteúdo não utilizado;
-• Adição de conteúdos que estavam na lista de coisas incompletas.
+## 🧪 [0.1.0] - Refinamento & Assets
+*   **Integração React:** Finalização dos primeiros testes de funcionalidade com React.
+*   **Estilização:** Ajustes de CSS e padronização visual das primeiras telas.
+*   **Gestão de Assets:** Atualização da biblioteca de ícones/imagens e implementação de novas funções de interface.
+
+## 🏗 [0.0.0] - O Início (Legacy)
+*   **Rebirth:** Remasterização do antigo projeto *Atlas Developers* com uma nova proposta de valor.
+*   **Design System:** Criação dos primeiros conceitos visuais e protótipos.
+*   **Arquitetura:** Implementação do React para organização da estrutura funcional do site.
+
+---
+> "Conectando desenvolvedores ao futuro." 🇧🇷
 
 
