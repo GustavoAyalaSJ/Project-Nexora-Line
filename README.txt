@@ -1,4 +1,4 @@
-Nexora Line (Originalmente Atlas Developers) é um projeto para criação de um site de recrutamento para desenvolvedores (front, back-end, analista de TI, etc.) pelo Brasil, onde o site está sendo construído para uma interface moderna, tecnológica e amigável para empresas e candidatos. 
+Nexora Line é um projeto para criação de um site de recrutamento para desenvolvedores (front, back-end, analista de TI, etc.) pelo Brasil, onde o site está sendo construído para uma interface moderna, tecnológica e amigável para empresas e candidatos. 
 
 ==== NEXORA LINE CHANGELOGS ====
 
