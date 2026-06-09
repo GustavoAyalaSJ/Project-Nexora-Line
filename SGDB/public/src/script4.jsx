@@ -1,341 +1,434 @@
 function UserActions() {
-  const [dropdownAberto, setDropdownAberto] = React.useState(null);
-  const dropdownRef = React.useRef(null);
+    const [dropdownAberto, setDropdownAberto] = React.useState(null);
+    const dropdownRef = React.useRef(null);
 
-  const handleAbrirNotificações = () => setDropdownAberto('notifications-button');
-  const handleAbrirPerfil = () => setDropdownAberto('profile-button');
+    const handleAbrirNotificacoes = () => setDropdownAberto("notifications-button");
+    const handleAbrirPerfil = () => setDropdownAberto("profile-button");
+    const handleFecharDropdown = () => setDropdownAberto(null);
 
-  const handleFecharDropdown = () => setDropdownAberto(null);
-
-  React.useEffect(() => {
-    function handleClickFora(event) {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target)
-      ) {
-        setDropdownAberto(null);
-      }
-    }
-
-    if (dropdownAberto) {
-      document.addEventListener('mousedown', handleClickFora);
-    } else {
-      document.removeEventListener('mousedown', handleClickFora);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickFora);
-    };
-  }, [dropdownAberto]);
-
-  return (
-    <React.Fragment>
-      <div className="header-user-actions">
-        <button onClick={handleAbrirNotificações} className="icon-button" aria-label="Notificações">
-          <i className="bi bi-bell"></i>
-        </button>
-        <button onClick={handleAbrirPerfil} className="icon-button" aria-label="Perfil">
-          <i className="bi bi-person-circle"></i>
-        </button>
-      </div>
-
-      {dropdownAberto === 'notifications-button' && (
-        <div ref={dropdownRef} className="dropdown-content">
-          <h1 className="notification-text"><strong>Notificações</strong></h1>
-          <p className="notification-warning">Você não possui novas notificações.</p>
-          <button onClick={handleFecharDropdown} className="close-dropdown">Fechar</button>
-        </div>
-      )}
-
-      {dropdownAberto === 'profile-button' && (
-        <div ref={dropdownRef} className="dropdown-content" id="profile-dropdown">
-          <a href="PerfilUserPage.html" className="settings-link"><i className="bi bi-person-badge"></i>Perfil</a>
-          <a href="#" className="settings-link"><i className="bi bi-gear"></i> Configurações</a>
-          <a href="IntroducedPage.html"><i className="bi bi-box-arrow-left"></i> Sair</a>
-          <button onClick={handleFecharDropdown} className="close-dropdown">Fechar</button>
-        </div>
-      )}
-    </React.Fragment>
-  );
-}
-
-function ProfileBox({ perfil, onEditarClick }) {
-    const contatos = perfil.contato || {};
-    const listaProjetos = perfil.projetos || [];
-
-    return (
-        <div className="perfil-container">
-            <div className="perfil-header">
-                {perfil.avatarUrl ? (
-                    <img 
-                        src={perfil.avatarUrl} 
-                        alt={`Avatar de ${perfil.nome || 'Usuário'}`} 
-                        className="perfil-avatar-img"
-                    />
-                ) : (
-                    <i className="bi bi-person-square perfil-avatar"></i>
-                )}
-                
-                <div className="perfil-info">
-                    <h2>{perfil.nome || 'NOME'}</h2>
-                    <p className="info-localizacao">
-                        <i className="bi bi-geo-alt-fill"></i> {perfil.localizacao || 'LOCALIZAÇÃO'}
-                    </p>
-                    <p className="info-bio">{perfil.bio || 'BIO'}</p>
-                </div>
-                <div className="profile-actions">
-                    <button className="btn-perfil" onClick={onEditarClick}>Editar Perfil</button>
-                    <a href="PortifólioPage.html">
-                        <button className="btn-portifólio" href="PortifólioPage.html">Portifólio</button>
-                    </a>
-                </div>
-            </div>
-
-            <div className="perfil-body">
-                <div className="secao-projetos">
-                    <h3>Projetos</h3>
-                    <div className="displayProjectBox">
-                        {listaProjetos.length === 0 ? (
-                            <p className="placeholder-info">Nenhum projeto adicionado.</p>
-                        ) : (
-                            <p>/* Lista de projetos aqui */</p>
-                        )}
-                    </div>
-                </div>
-
-                <div className="secao-contatos">
-                    <h3>Contato</h3>
-                    <ul className="lista-contato">
-                        <li>
-                            <i className="bi bi-envelope-at-fill"></i>
-                            {contatos.email ? <span>{contatos.email}</span> : <span className="placeholder-info">Não informado</span>}
-                        </li>
-                        <li>
-                            <i className="bi bi-telephone-fill"></i>
-                            {contatos.telefone ? <span>{contatos.telefone}</span> : <span className="placeholder-info">Não informado</span>}
-                        </li>
-                        <li>
-                            <i className="bi bi-linkedin"></i>
-                            {contatos.linkedin ? <span>{contatos.linkedin}</span> : <span className="placeholder-info">Não informado</span>}
-                        </li>
-                        <li>
-                            <i className="bi bi-github"></i>
-                            {contatos.github ? <span>{contatos.github}</span> : <span className="placeholder-info">Não informado</span>}
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    );
-}
-
-function ModalEditarPerfil({ dadosAtuais, onSalvar, onFechar }) {
-    const [dadosEditados, setDadosEditados] = React.useState({
-        ...dadosAtuais,
-        avatarUrl: dadosAtuais.avatarUrl || null, 
-        avatarFile: null 
-    });
-    const inputArquivoRef = React.useRef(null);
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-
-        if (['email', 'telefone', 'linkedin', 'github'].includes(name)) {
-            setDadosEditados(dadosAnteriores => ({
-                ...dadosAnteriores,
-                contato: {
-                    ...dadosAnteriores.contato,
-                    [name]: value
-                }
-            }));
-        } else {
-            setDadosEditados(dadosAnteriores => ({
-                ...dadosAnteriores,
-                [name]: value
-            }));
-        }
-    };
-
-    const handleFileChange = (e) => {
-        const arquivo = e.target.files[0];
-        if (arquivo) {
-            if (dadosEditados.avatarUrl) {
-                URL.revokeObjectURL(dadosEditados.avatarUrl);
+    React.useEffect(() => {
+        function handleClickFora(event) {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setDropdownAberto(null);
             }
-            
-            const url = URL.createObjectURL(arquivo);
-            
-            setDadosEditados(dadosAnteriores => ({
-                ...dadosAnteriores,
-                avatarUrl: url,
-                avatarFile: arquivo
-            }));
         }
-    };
-    
-    const handleRemoverImagem = () => {
-        if (dadosEditados.avatarUrl) {
-            URL.revokeObjectURL(dadosEditados.avatarUrl);
-        }
-        
-        setDadosEditados(dadosAnteriores => ({
-            ...dadosAnteriores,
-            avatarUrl: null,
-            avatarFile: null
-        }));
-        
-        if (inputArquivoRef.current) {
-            inputArquivoRef.current.value = '';
-        }
-    };
 
-    const handleSalvarClick = () => {
-        onSalvar(dadosEditados); 
-    };
+        if (dropdownAberto) {
+            document.addEventListener("mousedown", handleClickFora);
+        } else {
+            document.removeEventListener("mousedown", handleClickFora);
+        }
+
+        return () => document.removeEventListener("mousedown", handleClickFora);
+    }, [dropdownAberto]);
 
     return (
-        <div className="modal-overlay">
-            <div className="modal-content">
-
-                <div className="modal-header">
-                    <div className="modal-avatar-section">
-                        {dadosEditados.avatarUrl ? (
-                            <img 
-                                src={dadosEditados.avatarUrl} 
-                                alt="Avatar de Perfil" 
-                            />
-                        ) : (
-                            <i className="bi bi-person-circle modal-avatar-placeholder"></i>
-                        )}
-                        
-                        <input
-                            type="file"
-                            accept="image/*"
-                            ref={inputArquivoRef}
-                            style={{ display: 'none' }}
-                            onChange={handleFileChange}
-                        />
-                        <button className="btn-upload" onClick={() => inputArquivoRef.current?.click()}>UPLOAD</button>
-                        
-                        <button 
-                            className="btn-remover" 
-                            onClick={handleRemoverImagem}
-                            disabled={!dadosEditados.avatarUrl} 
-                        >
-                            REMOVER
-                        </button>
-                    </div>
-                    
-                    <div className="modal-info-section">
-                        <label>NOME COMPLETO:</label>
-                        <input
-                            type="text"
-                            name="nome"
-                            placeholder="Informe seu nome"
-                            value={dadosEditados.nome}
-                            onChange={handleChange}
-                        />
-                        <label>LOCALIZAÇÃO:</label>
-                        <input
-                            type="text"
-                            name="localizacao"
-                            placeholder="Informe sua localização"
-                            value={dadosEditados.localizacao}
-                            onChange={handleChange}
-                        />
-                    </div>
-                </div>
-
-                <div className="modal-body">
-                    <label>BIO:</label>
-                    <textarea
-                        name="bio"
-                        placeholder="Descreva sobre você"
-                        value={dadosEditados.bio}
-                        onChange={handleChange}
-                    ></textarea>
-
-                    <label>CONTATO:</label>
-                    <input
-                        type="email"
-                        name="email"
-                        placeholder="Seu e-mail"
-                        value={dadosEditados.contato.email || ''}
-                        onChange={handleChange}
-                    />
-                    <input
-                        type="tel"
-                        name="telefone"
-                        placeholder="Seu telefone"
-                        value={dadosEditados.contato.telefone || ''}
-                        onChange={handleChange}
-                    />
-                    <input
-                        type="text"
-                        name="linkedin"
-                        placeholder="URL do seu LinkedIn"
-                        value={dadosEditados.contato.linkedin || ''}
-                        onChange={handleChange}
-                    />
-                    <input
-                        type="text"
-                        name="github"
-                        placeholder="URL do seu GitHub"
-                        value={dadosEditados.contato.github || ''}
-                        onChange={handleChange}
-                    />
-                </div>
-
-                <div className="modal-footer">
-                    <button className="btn-salvar" onClick={handleSalvarClick}>SALVAR ALTERAÇÕES</button>
-                    <button className="btn-cancelar" onClick={onFechar}>CANCELAR</button>
-                </div>
+        <>
+            <div className="header-user-actions">
+                <button onClick={handleAbrirNotificacoes} className="icon-button" aria-label="Notificações">
+                    <i className="bi bi-bell"></i>
+                </button>
+                <button onClick={handleAbrirPerfil} className="icon-button" aria-label="Perfil">
+                    <i className="bi bi-person-circle"></i>
+                </button>
             </div>
-        </div>
+
+            {dropdownAberto === "notifications-button" && (
+                <div ref={dropdownRef} className="dropdown-content">
+                    <h1 className="notification-text">
+                        <strong>Notificações</strong>
+                    </h1>
+                    <p className="notification-warning">Você não possui novas notificações.</p>
+                    <button onClick={handleFecharDropdown} className="close-dropdown">
+                        Fechar
+                    </button>
+                </div>
+            )}
+
+            {dropdownAberto === "profile-button" && (
+                <div ref={dropdownRef} className="dropdown-content" id="profile-dropdown">
+                    <a href="PerfilUserPage.html" className="settings-link">
+                        <i className="bi bi-person-badge"></i> Perfil
+                    </a>
+                    <a href="#" className="settings-link">
+                        <i className="bi bi-gear"></i> Configurações
+                    </a>
+                    <a href="IntroducedPage.html">
+                        <i className="bi bi-box-arrow-left"></i> Sair
+                    </a>
+                    <button onClick={handleFecharDropdown} className="close-dropdown">
+                        Fechar
+                    </button>
+                </div>
+            )}
+        </>
     );
 }
 
 
-function PaginaPerfil() {
-  const [perfil, setPerfil] = React.useState({
-    nome: "",
-    localizacao: "",
-    bio: "",
-    contato: {
-      email: "",
-      telefone: "",
-      linkedin: "",
-      github: ""
-    },
-    projetos: []
-  });
+const ESTADOS_DATA = [
+    { nome: "Acre", sigla: "AC", municipios: ["Rio Branco", "Cruzeiro do Sul"] },
+    { nome: "Alagoas", sigla: "AL", municipios: ["Maceió", "Arapiraca"] },
+    { nome: "Amapá", sigla: "AP", municipios: ["Macapá", "Santana", "Laranjal do Jari"] },
+    { nome: "Amazonas", sigla: "AM", municipios: ["Manaus", "Parintins", "Itacoatiara"] },
+    { nome: "Bahia", sigla: "BA", municipios: ["Salvador", "Feira de Santana", "Vitória da Conquista"] },
+    { nome: "Ceará", sigla: "CE", municipios: ["Fortaleza", "Caucaia", "Juazeiro do Norte"] },
+    { nome: "Distrito Federal", sigla: "DF", municipios: ["Brasília"] },
+    { nome: "Espírito Santo", sigla: "ES", municipios: ["Vitória", "Vila Velha", "Serra"] },
+    { nome: "Goiás", sigla: "GO", municipios: ["Goiânia", "Aparecida de Goiânia", "Anápolis"] },
+    { nome: "Maranhão", sigla: "MA", municipios: ["São Luís", "Imperatriz"] },
+    { nome: "Mato Grosso", sigla: "MT", municipios: ["Cuiabá", "Várzea Grande", "Rondonópolis"] },
+    { nome: "Mato Grosso do Sul", sigla: "MS", municipios: ["Campo Grande", "Dourados", "Três Lagoas"] },
+    { nome: "Minas Gerais", sigla: "MG", municipios: ["Belo Horizonte", "Uberlândia", "Contagem"] },
+    { nome: "Pará", sigla: "PA", municipios: ["Belém", "Ananindeua", "Santarém"] },
+    { nome: "Paraíba", sigla: "PB", municipios: ["João Pessoa", "Campina Grande"] },
+    { nome: "Paraná", sigla: "PR", municipios: ["Curitiba", "Londrina", "Maringá"] },
+    { nome: "Pernambuco", sigla: "PE", municipios: ["Recife", "Caruaru", "Olinda"] },
+    { nome: "Piauí", sigla: "PI", municipios: ["Teresina", "Parnaíba", "Picos"] },
+    { nome: "Rio de Janeiro", sigla: "RJ", municipios: ["Rio de Janeiro", "Niterói", "Duque de Caxias"] },
+    { nome: "Rio Grande do Norte", sigla: "RN", municipios: ["Natal", "Mossoró", "Parnamirim"] },
+    { nome: "Rio Grande do Sul", sigla: "RS", municipios: ["Porto Alegre", "Caxias do Sul", "Pelotas"] },
+    { nome: "Rondônia", sigla: "RO", municipios: ["Porto Velho", "Ji-Paraná", "Ariquemes"] },
+    { nome: "Roraima", sigla: "RR", municipios: ["Boa Vista"] },
+    { nome: "Santa Catarina", sigla: "SC", municipios: ["Florianópolis", "Joinville", "Blumenau"] },
+    { nome: "São Paulo", sigla: "SP", municipios: ["São Paulo", "Campinas", "Santos"] },
+    { nome: "Sergipe", sigla: "SE", municipios: ["Aracaju", "Nossa Senhora do Socorro"] },
+    { nome: "Tocantins", sigla: "TO", municipios: ["Palmas", "Araguaína"] }
+];
 
-  const [modalAberto, setModalAberto] = React.useState(false);
+function DetalhesVaga({ vaga, onAbrirModalContato, interesseMap, setInteresseMap }) {
+    const savedLogoSrc = localStorage.getItem("companyLogoDataURL");
+    const logoToDisplay = savedLogoSrc || vaga?.logo;
+    const temInteresse = !!interesseMap[vaga?.id];
 
-  const handleSalvarPerfil = (novosDados) => {
-    setPerfil(novosDados);
-    setModalAberto(false);
-    console.log("Salvando no 'banco de dados'...", novosDados);
-  };
+    const handleInteresseClick = () => {
+        if (vaga && vaga.id) {
+            setInteresseMap((prev) => ({ ...prev, [vaga.id]: true }));
+        }
+    };
 
-  return (
-    <React.Fragment>
-      <ProfileBox
-        perfil={perfil}
-        onEditarClick={() => setModalAberto(true)}
-      />
+    if (!vaga) {
+        return (
+            <aside className="detalhes-container placeholder">
+                <h2>MAIS INFORMAÇÕES</h2>
+                <div className="detalhes-empresa">
+                    <div className="detalhes-logo logo-placeholder">LOGO</div>
+                    <h3>NOME DA EMPRESA</h3>
+                </div>
+            </aside>
+        );
+    }
 
-      {modalAberto && (
-        <ModalEditarPerfil
-          dadosAtuais={perfil}
-          onSalvar={handleSalvarPerfil}
-          onFechar={() => setModalAberto(false)}
-        />
-      )}
-    </React.Fragment>
-  );
+    return (
+        <aside className="detalhes-container">
+            <h2>MAIS INFORMAÇÕES</h2>
+            <div className="detalhes-empresa">
+                <img src={logoToDisplay || ""} alt={`Logo ${vaga.company}`} className="detalhes-logo" />
+                <h3>{vaga.company}</h3>
+            </div>
+            <div className="detalhes-info">
+                <strong>DIRIGENTE DA PROPOSTA</strong>
+                <p>{vaga.dirigente || "Não informado"}</p>
+                <strong>{vaga.title}</strong>
+                <p>{vaga.period}</p>
+                <p>{vaga.serviceType}</p>
+            </div>
+            {!temInteresse && (
+                <button className="interesse-button" onClick={handleInteresseClick}>
+                    <i className="bi bi-check-circle"></i> ESTOU INTERESSADO
+                </button>
+            )}
+            <button
+                onClick={onAbrirModalContato}
+                className="contato-button"
+                disabled={!temInteresse}
+                title={!temInteresse ? "Clique em 'Estou Interessado' para desbloquear" : "Entrar em contato"}
+            >
+                ENTRAR EM CONTATO
+            </button>
+        </aside>
+    );
 }
 
-//Renderizar
-ReactDOM.createRoot(document.getElementById('react-userActions')).render(<UserActions />);
-ReactDOM.createRoot(document.getElementById('react-profile&profile-customization')).render(<PaginaPerfil />);
+function CardVaga({ vaga, estaAtiva, aoClicar }) {
+    const className = `card-vaga ${estaAtiva ? "active" : ""}`;
+    const getFavoritos = () => JSON.parse(localStorage.getItem("nexoraFavoritos") || "[]");
+
+    const [isFavorito, setIsFavorito] = React.useState(() => {
+        const favoritos = getFavoritos();
+        return favoritos.some((fav) => fav.id === vaga.id);
+    });
+
+    const handleFavoritoClick = (e) => {
+        e.stopPropagation();
+        const favoritos = getFavoritos();
+        let novosFavoritos;
+
+        if (isFavorito) {
+            novosFavoritos = favoritos.filter((fav) => fav.id !== vaga.id);
+        } else {
+            novosFavoritos = [{ ...vaga }, ...favoritos];
+        }
+
+        localStorage.setItem("nexoraFavoritos", JSON.stringify(novosFavoritos));
+        setIsFavorito(!isFavorito);
+    };
+
+    return (
+        <article className={className} onClick={aoClicar}>
+            <h3>{vaga.title}</h3>
+            <p className="empresa">{vaga.company}</p>
+            <p className="local">
+                {vaga.city} - {vaga.state}
+            </p>
+            <div className="info-rodapé">
+                <span>{vaga.period}</span>
+                <span>{vaga.serviceType}</span>
+            </div>
+            <button className="favorite-btn" onClick={handleFavoritoClick}>
+                <i className={isFavorito ? "bi bi-heart-fill" : "bi bi-heart"}></i>
+            </button>
+        </article>
+    );
+}
+
+const loadVagasFromStorage = () => {
+    try {
+        const stored = localStorage.getItem("nexoraVagas");
+        return stored ? JSON.parse(stored) : [];
+    } catch (error) {
+        console.error("Erro ao carregar vagas:", error);
+        return [];
+    }
+};
+
+function PaginaDeVagas() {
+    const [vagas, setVagas] = React.useState(loadVagasFromStorage);
+
+    React.useEffect(() => {
+        setVagas(loadVagasFromStorage());
+
+        const handleStorageChange = (e) => {
+            if (e.key === "nexoraVagas") {
+                setVagas(loadVagasFromStorage());
+            }
+        };
+
+        const handleCustomUpdate = (e) => {
+            if (e && e.detail && Array.isArray(e.detail.vagas)) {
+                setVagas(e.detail.vagas);
+            } else {
+                setVagas(loadVagasFromStorage());
+            }
+        };
+
+        window.addEventListener("storage", handleStorageChange);
+        window.addEventListener("nexoraVagasUpdated", handleCustomUpdate);
+
+        return () => {
+            window.removeEventListener("storage", handleStorageChange);
+            window.removeEventListener("nexoraVagasUpdated", handleCustomUpdate);
+        };
+    }, []);
+
+    const [filtros, setFiltros] = React.useState({
+        estado: "todos",
+        municipio: "todos",
+        nivel: "todos",
+    });
+
+    const [vagaSelecionadaId, setVagaSelecionadaId] = React.useState(null);
+    const [modalContatoAberto, setModalContatoAberto] = React.useState(false);
+    const [interesseMap, setInteresseMap] = React.useState({});
+
+    const municipiosParaFiltro = React.useMemo(() => {
+        if (filtros.estado === "todos") return [];
+        const estadoObj = ESTADOS_DATA.find((e) => e.sigla === filtros.estado);
+        return estadoObj ? estadoObj.municipios : [];
+    }, [filtros.estado]);
+
+    const vagasFiltradas = React.useMemo(() => {
+        return vagas.filter((vaga) => {
+            const passaEstado = filtros.estado === "todos" || vaga.state === filtros.estado;
+            const passaMunicipio = filtros.municipio === "todos" || vaga.city === filtros.municipio;
+            const passaNivel = filtros.nivel === "todos" || vaga.level === filtros.nivel;
+            return passaEstado && passaMunicipio && passaNivel;
+        });
+    }, [vagas, filtros]);
+
+    const vagaAtiva = React.useMemo(() => {
+        if (vagaSelecionadaId) return vagas.find((v) => v.id === vagaSelecionadaId);
+        return vagasFiltradas[0] || null;
+    }, [vagaSelecionadaId, vagasFiltradas, vagas]);
+
+    function handleFiltroChange(e) {
+        const { name, value } = e.target;
+        setFiltros((prev) => {
+            const novos = { ...prev, [name]: value };
+            if (name === "estado") novos.municipio = "todos";
+            return novos;
+        });
+        setVagaSelecionadaId(null);
+    }
+
+    return (
+        <>
+            <div className="vagas-pagina-container">
+                <nav className="filtros-container">
+                    <select name="estado" value={filtros.estado} onChange={handleFiltroChange}>
+                        <option value="todos">Selecione um Estado</option>
+                        {ESTADOS_DATA.map((e) => (
+                            <option key={e.sigla} value={e.sigla}>
+                                {e.nome}
+                            </option>
+                        ))}
+                    </select>
+
+                    <select
+                        name="municipio"
+                        value={filtros.municipio}
+                        onChange={handleFiltroChange}
+                        disabled={filtros.estado === "todos"}
+                    >
+                        <option value="todos">Selecione um Município</option>
+                        {municipiosParaFiltro.map((m) => (
+                            <option key={m} value={m}>
+                                {m}
+                            </option>
+                        ))}
+                    </select>
+
+                    <select name="nivel" value={filtros.nivel} onChange={handleFiltroChange}>
+                        <option value="todos">Selecione um Nível</option>
+                        <option value="junior">Júnior</option>
+                        <option value="pleno">Pleno</option>
+                        <option value="senior">Sênior</option>
+                    </select>
+                </nav>
+
+                <main className="vagas-conteudo-principal">
+                    <section className="lista-vagas-container">
+                        {vagasFiltradas.length > 0 ? (
+                            vagasFiltradas.map((vaga) => (
+                                <CardVaga
+                                    key={vaga.id}
+                                    vaga={vaga}
+                                    estaAtiva={vagaAtiva && vaga.id === vagaAtiva.id}
+                                    aoClicar={() => setVagaSelecionadaId(vaga.id)}
+                                />
+                            ))
+                        ) : (
+                            <p className="sem-vagas-aviso">Nenhuma vaga disponível.</p>
+                        )}
+                    </section>
+
+                    <DetalhesVaga
+                        vaga={vagaAtiva}
+                        onAbrirModalContato={() => setModalContatoAberto(true)}
+                        interesseMap={interesseMap}
+                        setInteresseMap={setInteresseMap}
+                    />
+                </main>
+            </div>
+
+            {modalContatoAberto && (
+                <div id="contatoModal" className="modal">
+                    <div className="modal-content">
+                        <button onClick={() => setModalContatoAberto(false)} style={{ float: "right" }}>
+                            X
+                        </button>
+                        <h2>Contato</h2>
+                        {vagaAtiva ? (
+                            <div className="contato-info">
+                                <p>
+                                    <strong>Linkedin:</strong>{" "}
+                                    <a href={vagaAtiva.linkedin} target="_blank" rel="noopener noreferrer">
+                                        {vagaAtiva.linkedin || "Não informado"}
+                                    </a>
+                                </p>
+                                <p>
+                                    <strong>Email:</strong>{" "}
+                                    <a href={`mailto:${vagaAtiva.email}`}>{vagaAtiva.email || "Não informado"}</a>
+                                </p>
+                                <p>
+                                    <strong>Telefone:</strong> {vagaAtiva.phone || "Não informado"}
+                                </p>
+                            </div>
+                        ) : (
+                            <p>Erro ao carregar informações de contato.</p>
+                        )}
+                    </div>
+                </div>
+            )}
+        </>
+    );
+}
+
+function FooterComModals() {
+    const [modalAberto, setModalAberto] = React.useState(null);
+    const fechar = () => setModalAberto(null);
+
+    return (
+        <>
+            <footer className="rodapé">
+                <div className="rodapé-links">
+                    <button onClick={() => setModalAberto("ajuda")} className="link-button">
+                        Ajuda
+                    </button>
+                    <span className="separador">|</span>
+                    <button onClick={() => setModalAberto("feedback")} className="link-button">
+                        Feedback
+                    </button>
+                    <span className="separador">|</span>
+                    <button onClick={() => setModalAberto("termos")} className="link-button">
+                        Termos e Serviços
+                    </button>
+                </div>
+            </footer>
+
+            {modalAberto && (
+                <div className="modal">
+                    <div className="modal-content">
+                        <button onClick={fechar} style={{ float: "right" }}>
+                            X
+                        </button>
+
+                        {modalAberto === "termos" && (
+                            <>
+                                <h2>Termos e Serviços</h2>
+                                <p>PLACEHOLDER.</p>
+                            </>
+                        )}
+
+                        {modalAberto === "ajuda" && (
+                            <>
+                                <h2>Ajuda</h2>
+                                <p>PLACEHOLDER.</p>
+                            </>
+                        )}
+
+                        {modalAberto === "feedback" && (
+                            <>
+                                <h2>Envie seu Feedback</h2>
+                                <form>
+                                    <label>Nome:</label>
+                                    <input type="text" placeholder="Seu nome completo" />
+                                    <label>Email:</label>
+                                    <input type="email" placeholder="Seu email" />
+                                    <label>Feedback:</label>
+                                    <textarea rows="5" maxLength="500"></textarea>
+                                    <button type="submit">Enviar</button>
+                                    <button type="reset">Limpar</button>
+                                </form>
+                            </>
+                        )}
+                    </div>
+                </div>
+            )}
+        </>
+    );
+}
+
+ReactDOM.createRoot(document.getElementById("react-userActions")).render(<UserActions />);
+ReactDOM.createRoot(document.getElementById("react-footer-e-modals")).render(<FooterComModals />);
+ReactDOM.createRoot(document.getElementById("root-vagas")).render(<PaginaDeVagas />);

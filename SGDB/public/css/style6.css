@@ -1,3 +1,4 @@
+/* Estrutura e Layout Geral */
 * {
     margin: 0;
     padding: 0;
@@ -5,40 +6,32 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
-        Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    background-color: #f4f7f6;
-    overflow-y: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f0f2f5;
     color: #333;
 }
 
 .background-container {
-    background-image: url('Fundo5.webp');
-    display: flex;
-    flex-direction: column;
-    background-repeat: no-repeat;
-    background-size: cover;
+    background-color: #f0f2f5;
     min-height: 100vh;
 }
 
+/* Cabeçalho */
 .cabeçalho {
     display: flex;
     align-items: center;
-    padding: 1rem 2.5rem;
+    padding: 1rem 2rem;
     background-color: #111;
     color: #fff;
-    position: relative;
-}
-
-.logotipo img {
-    height: 45px;
-    display: block;
-}
-
-.nav-menu {
-    display: flex;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
     gap: 1.5rem;
-    margin-left: auto;
+}
+
+.logo img {
+    height: 45px;
 }
 
 .nav-button {
@@ -55,458 +48,656 @@ body {
 }
 
 .nav-button:hover {
-    background-color: #624ca0;
-    color: white;
+    background-color: #ddd;
 }
 
-.search-bar {
-    display: flex;
-    border: 1px solid #fff;
-    border-radius: 20px;
-    padding: 5px 10px;
-}
-
-.search-bar input[type="text"] {
-    background: transparent;
-    border: none;
-    outline: none;
-    color: #fff;
-    padding: 0.2rem 0.5rem;
-    width: 200px;
-}
-
-.search-bar input::placeholder {
-    color: #ccc;
-}
-
-.search-bar .search-icon {
-    background: transparent;
-    border: none;
-    color: #fff;
-    cursor: pointer;
-    font-size: 1rem;
-    padding: 0 0.3rem;
-}
-
-#react-userActions {
-    position: relative;
-    margin-left: 1.5rem;
+.nav-menu {
+    margin-left: auto;
 }
 
 .header-user-actions {
     display: flex;
     gap: 1rem;
+    position: relative;
 }
 
 .icon-button {
     background: transparent;
     border: none;
     color: #fff;
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+}
+
+.icon-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .dropdown-content {
     position: absolute;
-    top: 55px;
+    top: 100%;
     right: 0;
-    width: 300px;
     background-color: #fff;
-    color: #333;
-    border: 1px solid #ddd;
+    min-width: 200px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-    padding: 1.5rem;
-    z-index: 1000;
+    padding: 1rem;
+    margin-top: 10px;
+    z-index: 1001;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
-#profile-dropdown {
-    width: 200px;
-}
-
-.dropdown-content .notification-text {
-    font-size: 1.2rem;
+.dropdown-content h1.notification-text {
+    font-size: 1.1rem;
+    color: #333;
     margin-bottom: 0.5rem;
 }
 
-.dropdown-content .notification-warning {
-    font-size: 0.9rem;
+.dropdown-content p.notification-warning {
     color: #777;
+    font-size: 0.9rem;
     margin-bottom: 1rem;
 }
 
-.dropdown-content a {
-    display: block;
+.dropdown-content .settings-link {
+    color: #333;
     text-decoration: none;
-    color: #222;
-    padding: 0.75rem 0;
+    padding: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background-color 0.2s ease;
+    border-radius: 4px;
+}
+
+.dropdown-content .settings-link:hover {
+    background-color: #f0f0f0;
+    padding-left: 0.25rem;
+}
+
+.dropdown-content .settings-link i {
     font-size: 1rem;
-    border-bottom: 1px solid #f0f0f0;
 }
 
-.dropdown-content a:last-of-type {
-    border-bottom: none;
-}
-
-.dropdown-content a:hover {
-    background-color: #f9f9f9;
-}
-
-.dropdown-content a i {
-    margin-right: 10px;
-    width: 20px;
-}
-
-.close-dropdown {
-    margin-top: 1rem;
+.dropdown-content .close-dropdown {
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    color: #555;
     padding: 0.5rem 1rem;
-    background-color: #eee;
-    border: 1px solid #ccc;
     border-radius: 5px;
     cursor: pointer;
-    width: 100%;
+    margin-top: 0.5rem;
+    transition: background-color 0.2s ease;
 }
 
+.dropdown-content .close-dropdown:hover {
+    background-color: #e0e0e0;
+}
+
+/* Conteúdo Principal */
 .main-content {
-    flex-grow: 1;
-    padding: 2.5rem;
-    max-width: 1400px;
-    margin: 0 auto;
     width: 100%;
-}
-
-.destacar{
-    color: rgb(100, 157, 221);
-}
-
-.messageWelcome {
-    text-align: center;
-    font-size: 2.5rem;
-    font-weight: 300;
-    color: #cecece;
-    margin-bottom: 40px;
+    padding: 20px 40px;
+    box-sizing: border-box;
 }
 
 .dashboard-container {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    gap: 24px; 
-    padding: 0 20px;
-    max-width: 1400px;
-    margin: 0 auto; 
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    padding: 2rem;
+    margin: 2rem auto;
+    max-width: 1200px;
+    width: 95%;
 }
 
-.dashboard-card {
-    padding: 24px;
-    border-radius: 8px;
-    color: white;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-}
-
-.dashboard-card h2 {
-    margin-top: 0;
-    margin-bottom: 16px;
-    font-size: 1.5rem;
-    font-weight: 500;
-}
-
-/* Vagas publicadas */
-.card-vagas {
-    background-color: #2c3e50;
-    min-height: 400px; 
-}
-
-.dashboard-column-stacked {
+.gerenciamento-layout {
     display: flex;
-    flex-direction: column;
-    gap: 24px;
+    gap: 2rem;
+    flex-wrap: wrap;
 }
 
-/* Insights */
-.card-insights {
-    background-color: #567799; 
-    min-height: 150px;
+.messageGerenciamento {
+    text-align: center;
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: #333;
+    padding-top: 2rem;
+    padding-bottom: 1rem;
 }
 
-/* Placeholder */
-.card-placeholder {
-    background-color: #6c757d;
-    flex-grow: 1;
-    min-height: 226px;
+.vagas-publicadas-section {
+    flex: 1;
+    min-width: 350px;
+    max-width: 450px;
 }
 
-/* Notícias */
-.card-noticias {
-    background-color: #34495e;
-    min-height: 400px; 
+.section-header {
     display: flex;
-    flex-direction: column;
     justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
 }
 
-.card-noticias-bottom p {
-    font-size: 0.9rem;
-    color: #e0e0e0;
-    margin-bottom: 8px; 
+.section-header h2 {
+    font-size: 1.2rem;
+    color: #333;
+    text-transform: uppercase;
 }
 
-.box-button {
-    background-color: rgba(255, 255, 255, 0.9);
+.filter-button {
+    background-color: #ddd;
     color: #333;
     border: none;
-    border-radius: 5px;
-    padding: 0.75rem 1.5rem;
-    cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
     font-weight: bold;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
     transition: background-color 0.2s ease;
-    width: 100%; 
-    box-sizing: border-box; 
 }
 
-.box-button:hover {
+.filter-button:hover {
+    background-color: #ccc;
+}
+
+.vagas-list-scroll {
+    max-height: calc(100vh - 250px);
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+.vaga-card {
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    padding: 1rem 1.5rem;
+    margin-bottom: 0.75rem;
+    border-radius: 8px;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.2s, border-left 0.2s;
+    border-left: 5px solid transparent;
+}
+
+.vaga-card:hover {
+    background-color: #f0f0f0;
+}
+
+.vaga-card.selected {
+    border-left-color: #5a2e9b;
+    background-color: #e6e6fa;
+}
+
+.vaga-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: #111;
+}
+
+.status-ativa {
+    color: #28a745;
+}
+
+.status-pausada {
+    color: #ffc107;
+}
+
+.card-footer {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.85rem;
+    color: #777;
+    margin-top: 0.5rem;
+}
+
+.delete-vaga-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: transparent;
+    border: none;
+    color: #dc3545;
+    font-size: 1.2rem;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.delete-vaga-btn:hover {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.empty-list-message {
+    padding: 3rem 1rem;
+    text-align: center;
+    color: #777;
+    font-size: 1.1rem;
+    background-color: #f9f9f9;
+    border: 1px dashed #ddd;
+    border-radius: 8px;
+}
+
+.vagas-display-section {
+    flex: 2;
+    background-color: #f7f7f7;
+    border-radius: 8px;
+    padding: 1rem;
+    min-height: 80vh;
+    position: relative;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.05);
+}
+
+.create-vaga-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 30px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    cursor: pointer;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.create-vaga-button:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+}
+
+.vaga-display-placeholder {
+    padding: 2rem;
+    text-align: center;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #777;
+}
+
+.vaga-display-placeholder h2 {
+    color: #555;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+}
+
+.vaga-display-placeholder p {
+    color: #999;
+    font-size: 1rem;
+}
+
+.vaga-display-detalhes h2 {
+    color: #5a2e9b;
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+}
+
+.vaga-display-detalhes p {
+    font-size: 1rem;
+    color: #555;
+}
+
+.edit-vaga-button {
+    background-color: #5a2e9b;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    margin-top: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background-color 0.2s ease;
+}
+
+.edit-vaga-button:hover {
+    background-color: #4a2180;
+}
+
+.form-vaga-container {
+    padding: 1.5rem;
     background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
+
+.form-vaga-container .titulo-form {
+    font-size: 1.8rem;
+    color: #5a2e9b;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.form-content-box {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-header-group {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.logo-upload-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    flex-shrink: 0;
+}
+
+.logo-preview-box {
+    width: 120px;
+    height: 120px;
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    object-fit: contain;
+    background-color: #f9f9f9;
+    padding: 5px;
+}
+
+.upload-button {
+    background-color: #5a2e9b;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background-color 0.2s ease;
+}
+
+.upload-button:hover {
+    background-color: #4a2180;
+}
+
+.input-group-columns {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.input-group-columns label,
+.vaga-info-group label,
+.contact-group label {
+    font-weight: bold;
+    color: #555;
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+}
+
+.input-group-columns input[type="text"],
+.input-group-columns input[type="email"],
+.input-group-columns input[type="tel"],
+.input-group-columns input[type="url"],
+.vaga-info-group input[type="text"],
+.vaga-info-group select,
+.contact-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.2s ease;
+}
+
+.input-group-columns input:focus,
+.vaga-info-group input:focus,
+.vaga-info-group select:focus,
+.contact-group input:focus,
+textarea:focus {
+    outline: none;
+    border-color: #5a2e9b;
+    box-shadow: 0 0 0 2px rgba(90, 46, 155, 0.2);
+}
+
+textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    min-height: 120px;
+    resize: vertical;
+    transition: border-color 0.2s ease;
+}
+
+
+.section-title {
+    font-size: 1.2rem;
+    color: #5a2e9b;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 0.5rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.vaga-info-group,
+.contact-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.button-publicar,
+.button-cancelar {
+    padding: 0.8rem 1.8rem;
+    border-radius: 25px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.button-publicar {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    box-shadow: 0 2px 5px rgba(40, 167, 69, 0.2);
+}
+
+.button-publicar:hover {
+    background-color: #218838;
+    transform: translateY(-1px);
+}
+
+.button-cancelar {
+    background-color: #f0f0f0;
+    color: #555;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.button-cancelar:hover {
+    background-color: #e0e0e0;
+    transform: translateY(-1px);
+}
+
+/* Modal (Administração) */
+#companyPasswordModal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+#companyPasswordModal > div {
+    background: #fff;
+    padding: 1.25rem;
+    border-radius: 8px;
+    width: 320px;
+    max-width: 90%;
+}
+
+#companyPasswordModal h3 {
+    margin-bottom: 0.5rem;
+}
+
+#companyPasswordModal p {
+    margin-bottom: 0.75rem;
+    color: #555;
+    font-size: 0.95rem;
+}
+
+#companyPasswordInput {
+    width: 100%;
+    padding: 0.6rem;
+    margin-bottom: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+#companyPasswordModal > div > div {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+#companyPasswordCancel,
+#companyPasswordSubmit {
+    padding: 0.5rem 0.9rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+}
+
+#companyPasswordCancel {
+    background: #f0f0f0;
+}
+
+#companyPasswordSubmit {
+    background: #5a2e9b;
+    color: #fff;
+}
+
+#companyPasswordError {
+    color: #c0392b;
+    display: none;
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+}
+
+#companyPasswordModal p:last-of-type {
+    margin-top: 0.75rem;
+    font-size: 0.8rem;
+    color: #666;
+}
+
+/* Filtro Panel */
+.filtro-panel {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    align-items: end;
+}
+
+.filtro-panel h3 {
+    grid-column: 1 / -1;
+    margin: 0 0 10px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.filtro-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.filtro-group label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #555;
+    font-size: 14px;
+}
+
+.filtro-group input,
+.filtro-group select {
+    padding: 8px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+.filtro-group input:focus,
+.filtro-group select:focus {
+    outline: none;
+    border-color: #5a2e9b;
+    box-shadow: 0 0 5px rgba(90, 46, 155, 0.2);
+}
+
+.btn-limpar-filtros {
+    grid-column: 1 / -1;
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.btn-limpar-filtros:hover {
+    background-color: #e0e0e0;
+}
+
 /* Media Queries */
-
-/* Tablets (768px to 1024px) */
-@media (max-width: 1024px) {
-    .dashboard-container {
-        grid-template-columns: 1fr 1fr;
-        gap: 16px;
-        padding: 0 15px;
-    }
-
+@media (max-width: 900px) {
     .main-content {
-        padding: 1.5rem;
-    }
-
-    .messageWelcome {
-        font-size: 1.8rem;
-        margin-bottom: 30px;
-    }
-
-    .dashboard-card h2 {
-        font-size: 1.2rem;
+        padding: 16px 20px;
     }
 }
 
-/* Tablets - Smaller (600px to 768px) */
-@media (max-width: 768px) {
-    .cabe�alho {
-        padding: 0.8rem 1.5rem;
-        flex-wrap: wrap;
-    }
-
-    .logotipo img {
-        height: 35px;
-    }
-
-    .nav-menu {
-        flex-wrap: wrap;
-        gap: 0.8rem;
-        margin-left: auto;
-        order: 3;
-        width: 100%;
-        margin-top: 0.8rem;
-    }
-
-    .nav-button {
-        padding: 0.5rem 1rem;
-        font-size: 0.8rem;
-    }
-
-    .search-bar {
-        display: none;
-    }
-
-    #react-userActions {
-        margin-left: auto;
-        order: 2;
-    }
-
-    .header-user-actions {
-        flex-direction: row;
-    }
-
-    .dropdown-content {
-        width: calc(100vw - 30px);
-        right: -15px;
-    }
-
-    .main-content {
-        padding: 1rem;
-        max-width: 100%;
-    }
-
-    .dashboard-container {
-        grid-template-columns: 1fr;
-        gap: 12px;
-        padding: 0 10px;
-    }
-
-    .messageWelcome {
-        font-size: 1.5rem;
-        margin-bottom: 20px;
-    }
-
-    .dashboard-card {
-        padding: 16px;
-        min-height: auto;
-    }
-
-    .card-vagas, .card-noticias {
-        min-height: 250px;
-    }
-
-    .dashboard-column-stacked {
-        gap: 12px;
-    }
-
-    .box-button {
-        padding: 0.6rem 1rem;
-        font-size: 0.9rem;
-    }
-
-    .card-insights {
-        min-height: 100px;
-    }
-}
-
-/* Mobile devices (up to 600px) */
 @media (max-width: 600px) {
-    body {
-        overflow-y: auto;
+    .main-content {
+        padding: 12px 14px;
     }
 
-    .background-container {
-        min-height: auto;
+    .gerenciamento-layout {
+        gap: 1rem;
     }
 
-    .cabe�alho {
-        padding: 0.6rem 0.8rem;
-        gap: 0.5rem;
-    }
-
-    .logotipo img {
-        height: 30px;
-    }
-
-    #react-userActions {
-        order: 2;
-        margin-left: auto;
-    }
-
-    .nav-menu {
-        order: 3;
+    .vagas-publicadas-section,
+    .vagas-display-section {
+        min-width: 0;
         width: 100%;
-        margin-top: 0.6rem;
-        margin-left: 0;
-        gap: 0.5rem;
-    }
-
-    .nav-button {
-        flex: 1;
-        padding: 0.4rem 0.5rem;
-        font-size: 0.7rem;
-    }
-
-    .icon-button {
-        font-size: 1.3rem;
-    }
-
-    .main-content {
-        padding: 0.8rem 0.5rem;
-        flex-grow: 1;
-    }
-
-    .messageWelcome {
-        font-size: 1.2rem;
-        margin-bottom: 15px;
-    }
-
-    .dashboard-container {
-        grid-template-columns: 1fr;
-        gap: 8px;
-        padding: 0;
-    }
-
-    .dashboard-card {
-        padding: 12px;
-        border-radius: 4px;
-    }
-
-    .dashboard-card h2 {
-        font-size: 1rem;
-        margin-bottom: 8px;
-    }
-
-    .card-vagas, .card-noticias {
-        min-height: 200px;
-    }
-
-    .card-insights, .card-placeholder {
-        min-height: 80px;
-    }
-
-    .dropdown-content {
-        width: calc(100vw - 20px);
-        padding: 1rem;
-        right: -10px;
-    }
-
-    .close-dropdown {
-        margin-top: 0.8rem;
-        padding: 0.4rem 0.8rem;
-    }
-
-    .box-button {
-        padding: 0.5rem 0.8rem;
-        font-size: 0.8rem;
-    }
-
-    .card-noticias-bottom p {
-        font-size: 0.75rem;
-    }
-}
-
-/* Extra small devices (up to 360px) */
-@media (max-width: 360px) {
-    .cabe�alho {
-        padding: 0.5rem 0.4rem;
-    }
-
-    .logotipo img {
-        height: 25px;
-    }
-
-    .nav-button {
-        font-size: 0.65rem;
-        padding: 0.3rem 0.4rem;
-    }
-
-    .icon-button {
-        font-size: 1.1rem;
-    }
-
-    .messageWelcome {
-        font-size: 1rem;
-        margin-bottom: 10px;
-    }
-
-    .main-content {
-        padding: 0.5rem;
-    }
-
-    .dashboard-card {
-        padding: 8px;
-    }
-
-    .dashboard-card h2 {
-        font-size: 0.9rem;
-    }
-
-    .box-button {
-        padding: 0.4rem 0.6rem;
-        font-size: 0.7rem;
     }
 }

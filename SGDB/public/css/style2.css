@@ -1,5 +1,4 @@
-/* Layout */
-
+/* Estrutura e Layout Geral */
 * {
     margin: 0;
     padding: 0;
@@ -14,7 +13,7 @@ body {
 }
 
 .background-container {
-    background-image: url('Fundo2.webp');
+    background-image: url('background/background2.webp');
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -215,7 +214,6 @@ body {
     border-radius: 10px;
     color: #fff;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-
     display: flex;
     flex-direction: column;
 }

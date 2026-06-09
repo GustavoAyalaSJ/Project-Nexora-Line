@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexora - Gerenciamento</title>
-    <link rel="stylesheet" href="CSS/style8.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <title>Nexora Line - Gerenciamento Vagas</title>
+    <link rel="stylesheet" href="CSS/style6.css" />
     <link rel="icon" type="image/png" href="Assets/Favicon-purple.webp">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
 </head>
 
 <body>
@@ -35,47 +35,24 @@
         </main>
     </div>
 
-    <div id="companyPasswordModal"
-        style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; z-index:2000;">
-        <div style="background:#fff; padding:1.25rem; border-radius:8px; width:320px; max-width:90%;">
-            <h3 style="margin-bottom:0.5rem;">Acesso Empresas</h3>
-            <p style="margin-bottom:0.75rem; color:#555; font-size:0.95rem;">Digite a senha para acessar o painel de
-                gerenciamento de vagas.</p>
-            <input id="companyPasswordInput" type="password" placeholder="Senha"
-                style="width:100%; padding:0.6rem; margin-bottom:0.75rem; border:1px solid #ccc; border-radius:4px;" />
-            <div style="display:flex; gap:0.5rem; justify-content:flex-end;">
-                <button id="companyPasswordCancel"
-                    style="padding:0.5rem 0.9rem; background:#f0f0f0; border-radius:6px; border:none;">Fechar</button>
-                <button id="companyPasswordSubmit"
-                    style="padding:0.5rem 0.9rem; background:#5a2e9b; color:#fff; border-radius:6px; border:none;">Entrar</button>
+    <div id="companyPasswordModal">
+        <div>
+            <h3>Acesso Empresas</h3>
+            <p>Digite a senha para acessar o painel de gerenciamento de vagas.</p>
+            <input id="companyPasswordInput" type="password" placeholder="Senha" />
+            <div>
+                <button id="companyPasswordCancel">Fechar</button>
+                <button id="companyPasswordSubmit">Entrar</button>
             </div>
-            <p id="companyPasswordError" style="color:#c0392b; display:none; margin-top:0.75rem; font-size:0.9rem;">
-                Senha incorreta.</p>
-            <p style="margin-top:0.75rem; font-size:0.8rem; color:#666;">Observação: Esta proteção é apenas client-side
-                e serve para mitigar acessos casuais.</p>
+            <p id="companyPasswordError">Senha incorreta.</p>
+            <p>Observação: Esta proteção é apenas client-side e serve para mitigar acessos casuais.</p>
         </div>
     </div>
-
-    <script>
-        (function () {
-            fetch('./.company_secret')
-                .then(resp => {
-                    if (!resp.ok) throw new Error('not found');
-                    return resp.text();
-                })
-                .then(text => {
-                    const m = text.match(/^PASSWORD=(.*)$/m);
-                    if (m) window.COMPANY_SECTION_PASSWORD = m[1].trim();
-                })
-                .catch(() => {
-                });
-        })();
-    </script>
 
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script type="text/babel" src="src/script8.jsx"></script>
+    <script type="text/babel" src="src/script6.jsx"></script>
 
 </body>
 

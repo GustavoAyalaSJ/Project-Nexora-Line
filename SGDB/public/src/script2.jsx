@@ -1,5 +1,4 @@
 function Box({ title, boxType, children }) {
-    // Você precisará estilizar 'box-container' e as classes (blue-dark, etc.) no seu CSS
     const className = `box-container ${boxType}`;
     return (
         <div className={className}>

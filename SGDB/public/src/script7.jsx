@@ -1,274 +1,341 @@
 function UserActions() {
-    const [dropdownAberto, setDropdownAberto] = React.useState(null);
-    const dropdownRef = React.useRef(null);
+  const [dropdownAberto, setDropdownAberto] = React.useState(null);
+  const dropdownRef = React.useRef(null);
 
-    const handleAbrirNotificações = () => setDropdownAberto('notifications-button');
-    const handleAbrirPerfil = () => setDropdownAberto('profile-button');
+  const handleAbrirNotificações = () => setDropdownAberto('notifications-button');
+  const handleAbrirPerfil = () => setDropdownAberto('profile-button');
 
-    const handleFecharDropdown = () => setDropdownAberto(null);
+  const handleFecharDropdown = () => setDropdownAberto(null);
 
-    React.useEffect(() => {
-        function handleClickFora(event) {
-            if (
-                dropdownRef.current &&
-                !dropdownRef.current.contains(event.target)
-            ) {
-                setDropdownAberto(null);
-            }
-        }
+  React.useEffect(() => {
+    function handleClickFora(event) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target)
+      ) {
+        setDropdownAberto(null);
+      }
+    }
 
-        if (dropdownAberto) {
-            document.addEventListener('mousedown', handleClickFora);
-        } else {
-            document.removeEventListener('mousedown', handleClickFora);
-        }
+    if (dropdownAberto) {
+      document.addEventListener('mousedown', handleClickFora);
+    } else {
+      document.removeEventListener('mousedown', handleClickFora);
+    }
 
-        return () => {
-            document.removeEventListener('mousedown', handleClickFora);
-        };
-    }, [dropdownAberto]);
+    return () => {
+      document.removeEventListener('mousedown', handleClickFora);
+    };
+  }, [dropdownAberto]);
 
-    return (
-        <React.Fragment>
-            <div className="header-user-actions">
-                <button onClick={handleAbrirNotificações} className="icon-button" aria-label="Notificações">
-                    <i className="bi bi-bell"></i>
-                </button>
-                <button onClick={handleAbrirPerfil} className="icon-button" aria-label="Perfil">
-                    <i className="bi bi-person-circle"></i>
-                </button>
-            </div>
+  return (
+    <React.Fragment>
+      <div className="header-user-actions">
+        <button onClick={handleAbrirNotificações} className="icon-button" aria-label="Notificações">
+          <i className="bi bi-bell"></i>
+        </button>
+        <button onClick={handleAbrirPerfil} className="icon-button" aria-label="Perfil">
+          <i className="bi bi-person-circle"></i>
+        </button>
+      </div>
 
-            {dropdownAberto === 'notifications-button' && (
-                <div ref={dropdownRef} className="dropdown-content">
-                    <h1 className="notification-text"><strong>Notificações</strong></h1>
-                    <p className="notification-warning">Você não possui novas notificações.</p>
-                    <button onClick={handleFecharDropdown} className="close-dropdown">Fechar</button>
-                </div>
-            )}
+      {dropdownAberto === 'notifications-button' && (
+        <div ref={dropdownRef} className="dropdown-content">
+          <h1 className="notification-text"><strong>Notificações</strong></h1>
+          <p className="notification-warning">Você não possui novas notificações.</p>
+          <button onClick={handleFecharDropdown} className="close-dropdown">Fechar</button>
+        </div>
+      )}
 
-            {dropdownAberto === 'profile-button' && (
-                <div ref={dropdownRef} className="dropdown-content" id="profile-dropdown">
-                    <a href="PerfilEmpresaPage.html" className="settings-link"><i className="bi bi-person-badge"></i>Perfil</a>
-                    <a href="#" className="settings-link"><i className="bi bi-gear"></i> Configurações</a>
-                    <a href="IntroducedPage.html"><i className="bi bi-box-arrow-left"></i> Sair</a>
-                    <button onClick={handleFecharDropdown} className="close-dropdown">Fechar</button>
-                </div>
-            )}
-
-        </React.Fragment>
-    );
+      {dropdownAberto === 'profile-button' && (
+        <div ref={dropdownRef} className="dropdown-content" id="profile-dropdown">
+          <a href="PerfilUserPage.html" className="settings-link"><i className="bi bi-person-badge"></i>Perfil</a>
+          <a href="#" className="settings-link"><i className="bi bi-gear"></i> Configurações</a>
+          <a href="IntroducedPage.html"><i className="bi bi-box-arrow-left"></i> Sair</a>
+          <button onClick={handleFecharDropdown} className="close-dropdown">Fechar</button>
+        </div>
+      )}
+    </React.Fragment>
+  );
 }
 
-function PerfilEmpresa() {
-    const [editandoSobre, setEditandoSobre] = React.useState(false);
-    const [editandoRedes, setEditandoRedes] = React.useState(false);
-    const [empresa, setEmpresa] = React.useState(() => {
-        const saved = localStorage.getItem('nexoraEmpresaPerfil');
-        return saved ? JSON.parse(saved) : {
-            nome: 'Nome da Empresa',
-            cnpj: '00.000.000/0001-00',
-            email: 'empresa@email.com',
-            telefone: '(00) 00000-0000',
-            site: 'https://www.empresa.com',
-            sobre: 'Descrição sobre a empresa...',
-            localizacao: 'São Paulo, SP',
-            funcionarios: '50-100',
-            linkedin: 'https://linkedin.com/company/empresa',
-            instagram: 'https://instagram.com/empresa',
-            facebook: 'https://facebook.com/empresa',
-            twitter: 'https://twitter.com/empresa'
-        };
-    });
-
-    const [formData, setFormData] = React.useState(empresa);
-
-    const salvarPerfil = () => {
-        setEmpresa(formData);
-        localStorage.setItem('nexoraEmpresaPerfil', JSON.stringify(formData));
-        setEditandoSobre(false);
-        setEditandoRedes(false);
-        alert('Perfil atualizado com sucesso!');
-    };
-
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
-    };
+function ProfileBox({ perfil, onEditarClick }) {
+    const contatos = perfil.contato || {};
+    const listaProjetos = perfil.projetos || [];
 
     return (
-        <div className="empresa-perfil-container">
+        <div className="perfil-container">
             <div className="perfil-header">
-                <div className="perfil-avatar">
-                    <i className="bi bi-building"></i>
-                </div>
+                {perfil.avatarUrl ? (
+                    <img 
+                        src={perfil.avatarUrl} 
+                        alt={`Avatar de ${perfil.nome || 'Usuário'}`} 
+                        className="perfil-avatar-img"
+                    />
+                ) : (
+                    <i className="bi bi-person-square perfil-avatar"></i>
+                )}
+                
                 <div className="perfil-info">
-                    <h2>{empresa.nome}</h2>
-                    <p>{empresa.localizacao}</p>
+                    <h2>{perfil.nome || 'NOME'}</h2>
+                    <p className="info-localizacao">
+                        <i className="bi bi-geo-alt-fill"></i> {perfil.localizacao || 'LOCALIZAÇÃO'}
+                    </p>
+                    <p className="info-bio">{perfil.bio || 'BIO'}</p>
+                </div>
+                <div className="profile-actions">
+                    <button className="btn-perfil" onClick={onEditarClick}>Editar Perfil</button>
+                    <a href="PortifólioPage.html">
+                        <button className="btn-portifólio" href="PortifólioPage.html">Portifólio</button>
+                    </a>
                 </div>
             </div>
 
-            <div className="perfil-grid">
-                <section className="perfil-card">
-                    <div className="card-header">
-                        <h3><i className="bi bi-info-circle"></i> Informações Gerais</h3>
-                        <button 
-                            onClick={() => {
-                                setFormData(empresa);
-                                setEditandoSobre(!editandoSobre);
-                            }}
-                            className="btn-editar"
-                        >
-                            <i className="bi bi-pencil"></i> {editandoSobre ? 'Cancelar' : 'Editar'}
-                        </button>
-                    </div>
-                    <div className="card-content">
-                        {editandoSobre ? (
-                            <>
-                                <div className="form-group">
-                                    <label>Nome da Empresa:</label>
-                                    <input type="text" name="nome" value={formData.nome} onChange={handleInputChange} />
-                                </div>
-                                <div className="form-group">
-                                    <label>CNPJ:</label>
-                                    <input type="text" name="cnpj" value={formData.cnpj} onChange={handleInputChange} />
-                                </div>
-                                <div className="form-group">
-                                    <label>Email:</label>
-                                    <input type="email" name="email" value={formData.email} onChange={handleInputChange} />
-                                </div>
-                                <div className="form-group">
-                                    <label>Telefone:</label>
-                                    <input type="tel" name="telefone" value={formData.telefone} onChange={handleInputChange} />
-                                </div>
-                                <div className="form-group">
-                                    <label>Site:</label>
-                                    <input type="url" name="site" value={formData.site} onChange={handleInputChange} />
-                                </div>
-                                <div className="form-group">
-                                    <label>Localização:</label>
-                                    <input type="text" name="localizacao" value={formData.localizacao} onChange={handleInputChange} />
-                                </div>
-                                <div className="form-group">
-                                    <label>Número de Funcionários:</label>
-                                    <select name="funcionarios" value={formData.funcionarios} onChange={handleInputChange}>
-                                        <option>1-10</option>
-                                        <option>11-50</option>
-                                        <option>50-100</option>
-                                        <option>100-500</option>
-                                        <option>500+</option>
-                                    </select>
-                                </div>
-                                <button onClick={salvarPerfil} className="btn-salvar">Salvar Alterações</button>
-                            </>
+            <div className="perfil-body">
+                <div className="secao-projetos">
+                    <h3>Projetos</h3>
+                    <div className="displayProjectBox">
+                        {listaProjetos.length === 0 ? (
+                            <p className="placeholder-info">Nenhum projeto adicionado.</p>
                         ) : (
-                            <>
-                                <p><strong>CNPJ:</strong> {empresa.cnpj}</p>
-                                <p><strong>Email:</strong> {empresa.email}</p>
-                                <p><strong>Telefone:</strong> {empresa.telefone}</p>
-                                <p><strong>Site:</strong> <a href={empresa.site} target="_blank" rel="noopener noreferrer">{empresa.site}</a></p>
-                                <p><strong>Localização:</strong> {empresa.localizacao}</p>
-                                <p><strong>Funcionários:</strong> {empresa.funcionarios}</p>
-                            </>
+                            <p>/* Lista de projetos aqui */</p>
                         )}
                     </div>
-                </section>
+                </div>
 
-                <section className="perfil-card">
-                    <div className="card-header">
-                        <h3><i className="bi bi-chat-quote"></i> Sobre a Empresa</h3>
-                        <button 
-                            onClick={() => setEditandoSobre(!editandoSobre)}
-                            className="btn-editar"
-                        >
-                            <i className="bi bi-pencil"></i> Editar
-                        </button>
-                    </div>
-                    <div className="card-content">
-                        {editandoSobre ? (
-                            <>
-                                <textarea 
-                                    name="sobre" 
-                                    value={formData.sobre} 
-                                    onChange={handleInputChange}
-                                    placeholder="Descrição sobre a empresa..."
-                                    rows="6"
-                                />
-                                <button onClick={salvarPerfil} className="btn-salvar">Salvar Alterações</button>
-                            </>
-                        ) : (
-                            <p>{empresa.sobre}</p>
-                        )}
-                    </div>
-                </section>
-
-                <section className="perfil-card">
-                    <div className="card-header">
-                        <h3><i className="bi bi-share"></i> Redes Sociais</h3>
-                        <button 
-                            onClick={() => {
-                                setFormData(empresa);
-                                setEditandoRedes(!editandoRedes);
-                            }}
-                            className="btn-editar"
-                        >
-                            <i className="bi bi-pencil"></i> {editandoRedes ? 'Cancelar' : 'Editar'}
-                        </button>
-                    </div>
-                    <div className="card-content">
-                        {editandoRedes ? (
-                            <>
-                                <div className="form-group">
-                                    <label>LinkedIn:</label>
-                                    <input type="url" name="linkedin" value={formData.linkedin} onChange={handleInputChange} />
-                                </div>
-                                <div className="form-group">
-                                    <label>Instagram:</label>
-                                    <input type="url" name="instagram" value={formData.instagram} onChange={handleInputChange} />
-                                </div>
-                                <div className="form-group">
-                                    <label>Facebook:</label>
-                                    <input type="url" name="facebook" value={formData.facebook} onChange={handleInputChange} />
-                                </div>
-                                <div className="form-group">
-                                    <label>Twitter:</label>
-                                    <input type="url" name="twitter" value={formData.twitter} onChange={handleInputChange} />
-                                </div>
-                                <button onClick={salvarPerfil} className="btn-salvar">Salvar Alterações</button>
-                            </>
-                        ) : (
-                            <div className="redes-list">
-                                {empresa.linkedin && (
-                                    <a href={empresa.linkedin} target="_blank" rel="noopener noreferrer" className="rede-link">
-                                        <i className="bi bi-linkedin"></i> LinkedIn
-                                    </a>
-                                )}
-                                {empresa.instagram && (
-                                    <a href={empresa.instagram} target="_blank" rel="noopener noreferrer" className="rede-link">
-                                        <i className="bi bi-instagram"></i> Instagram
-                                    </a>
-                                )}
-                                {empresa.facebook && (
-                                    <a href={empresa.facebook} target="_blank" rel="noopener noreferrer" className="rede-link">
-                                        <i className="bi bi-facebook"></i> Facebook
-                                    </a>
-                                )}
-                                {empresa.twitter && (
-                                    <a href={empresa.twitter} target="_blank" rel="noopener noreferrer" className="rede-link">
-                                        <i className="bi bi-twitter-x"></i> Twitter
-                                    </a>
-                                )}
-                            </div>
-                        )}
-                    </div>
-                </section>
+                <div className="secao-contatos">
+                    <h3>Contato</h3>
+                    <ul className="lista-contato">
+                        <li>
+                            <i className="bi bi-envelope-at-fill"></i>
+                            {contatos.email ? <span>{contatos.email}</span> : <span className="placeholder-info">Não informado</span>}
+                        </li>
+                        <li>
+                            <i className="bi bi-telephone-fill"></i>
+                            {contatos.telefone ? <span>{contatos.telefone}</span> : <span className="placeholder-info">Não informado</span>}
+                        </li>
+                        <li>
+                            <i className="bi bi-linkedin"></i>
+                            {contatos.linkedin ? <span>{contatos.linkedin}</span> : <span className="placeholder-info">Não informado</span>}
+                        </li>
+                        <li>
+                            <i className="bi bi-github"></i>
+                            {contatos.github ? <span>{contatos.github}</span> : <span className="placeholder-info">Não informado</span>}
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     );
 }
 
+function ModalEditarPerfil({ dadosAtuais, onSalvar, onFechar }) {
+    const [dadosEditados, setDadosEditados] = React.useState({
+        ...dadosAtuais,
+        avatarUrl: dadosAtuais.avatarUrl || null, 
+        avatarFile: null 
+    });
+    const inputArquivoRef = React.useRef(null);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+
+        if (['email', 'telefone', 'linkedin', 'github'].includes(name)) {
+            setDadosEditados(dadosAnteriores => ({
+                ...dadosAnteriores,
+                contato: {
+                    ...dadosAnteriores.contato,
+                    [name]: value
+                }
+            }));
+        } else {
+            setDadosEditados(dadosAnteriores => ({
+                ...dadosAnteriores,
+                [name]: value
+            }));
+        }
+    };
+
+    const handleFileChange = (e) => {
+        const arquivo = e.target.files[0];
+        if (arquivo) {
+            if (dadosEditados.avatarUrl) {
+                URL.revokeObjectURL(dadosEditados.avatarUrl);
+            }
+            
+            const url = URL.createObjectURL(arquivo);
+            
+            setDadosEditados(dadosAnteriores => ({
+                ...dadosAnteriores,
+                avatarUrl: url,
+                avatarFile: arquivo
+            }));
+        }
+    };
+    
+    const handleRemoverImagem = () => {
+        if (dadosEditados.avatarUrl) {
+            URL.revokeObjectURL(dadosEditados.avatarUrl);
+        }
+        
+        setDadosEditados(dadosAnteriores => ({
+            ...dadosAnteriores,
+            avatarUrl: null,
+            avatarFile: null
+        }));
+        
+        if (inputArquivoRef.current) {
+            inputArquivoRef.current.value = '';
+        }
+    };
+
+    const handleSalvarClick = () => {
+        onSalvar(dadosEditados); 
+    };
+
+    return (
+        <div className="modal-overlay">
+            <div className="modal-content">
+
+                <div className="modal-header">
+                    <div className="modal-avatar-section">
+                        {dadosEditados.avatarUrl ? (
+                            <img 
+                                src={dadosEditados.avatarUrl} 
+                                alt="Avatar de Perfil" 
+                            />
+                        ) : (
+                            <i className="bi bi-person-circle modal-avatar-placeholder"></i>
+                        )}
+                        
+                        <input
+                            type="file"
+                            accept="image/*"
+                            ref={inputArquivoRef}
+                            style={{ display: 'none' }}
+                            onChange={handleFileChange}
+                        />
+                        <button className="btn-upload" onClick={() => inputArquivoRef.current?.click()}>UPLOAD</button>
+                        
+                        <button 
+                            className="btn-remover" 
+                            onClick={handleRemoverImagem}
+                            disabled={!dadosEditados.avatarUrl} 
+                        >
+                            REMOVER
+                        </button>
+                    </div>
+                    
+                    <div className="modal-info-section">
+                        <label>NOME COMPLETO:</label>
+                        <input
+                            type="text"
+                            name="nome"
+                            placeholder="Informe seu nome"
+                            value={dadosEditados.nome}
+                            onChange={handleChange}
+                        />
+                        <label>LOCALIZAÇÃO:</label>
+                        <input
+                            type="text"
+                            name="localizacao"
+                            placeholder="Informe sua localização"
+                            value={dadosEditados.localizacao}
+                            onChange={handleChange}
+                        />
+                    </div>
+                </div>
+
+                <div className="modal-body">
+                    <label>BIO:</label>
+                    <textarea
+                        name="bio"
+                        placeholder="Descreva sobre você"
+                        value={dadosEditados.bio}
+                        onChange={handleChange}
+                    ></textarea>
+
+                    <label>CONTATO:</label>
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Seu e-mail"
+                        value={dadosEditados.contato.email || ''}
+                        onChange={handleChange}
+                    />
+                    <input
+                        type="tel"
+                        name="telefone"
+                        placeholder="Seu telefone"
+                        value={dadosEditados.contato.telefone || ''}
+                        onChange={handleChange}
+                    />
+                    <input
+                        type="text"
+                        name="linkedin"
+                        placeholder="URL do seu LinkedIn"
+                        value={dadosEditados.contato.linkedin || ''}
+                        onChange={handleChange}
+                    />
+                    <input
+                        type="text"
+                        name="github"
+                        placeholder="URL do seu GitHub"
+                        value={dadosEditados.contato.github || ''}
+                        onChange={handleChange}
+                    />
+                </div>
+
+                <div className="modal-footer">
+                    <button className="btn-salvar" onClick={handleSalvarClick}>SALVAR ALTERAÇÕES</button>
+                    <button className="btn-cancelar" onClick={onFechar}>CANCELAR</button>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+
+function PaginaPerfil() {
+  const [perfil, setPerfil] = React.useState({
+    nome: "",
+    localizacao: "",
+    bio: "",
+    contato: {
+      email: "",
+      telefone: "",
+      linkedin: "",
+      github: ""
+    },
+    projetos: []
+  });
+
+  const [modalAberto, setModalAberto] = React.useState(false);
+
+  const handleSalvarPerfil = (novosDados) => {
+    setPerfil(novosDados);
+    setModalAberto(false);
+    console.log("Salvando no 'banco de dados'...", novosDados);
+  };
+
+  return (
+    <React.Fragment>
+      <ProfileBox
+        perfil={perfil}
+        onEditarClick={() => setModalAberto(true)}
+      />
+
+      {modalAberto && (
+        <ModalEditarPerfil
+          dadosAtuais={perfil}
+          onSalvar={handleSalvarPerfil}
+          onFechar={() => setModalAberto(false)}
+        />
+      )}
+    </React.Fragment>
+  );
+}
+
+//Renderizar
 ReactDOM.createRoot(document.getElementById('react-userActions')).render(<UserActions />);
-ReactDOM.createRoot(document.getElementById('react-profile&profile-customization')).render(<PerfilEmpresa />);
+ReactDOM.createRoot(document.getElementById('react-profile&profile-customization')).render(<PaginaPerfil />);

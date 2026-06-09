@@ -4,7 +4,7 @@ function Header() {
     return (
         <header className="header">
             <div className="logo">
-                <img src="Assets/Nexora-PurpleLight.png" alt="Nexora logo" />
+                <img src="Assets/Nexora-LightPurple.webp" alt="Nexora logo" />
             </div>
             <nav className="nav-links">
                 <a>Suporte</a>
