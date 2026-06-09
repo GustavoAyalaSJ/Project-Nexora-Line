@@ -1,6 +1,6 @@
 Anotações do Nexora Line (Novo Nexora Line):
 
-1. Página Introduced (index.html):
+1. Página Nexora (index.html):
 - Layout: Concluído ✓
 O que falta:
 - Adicionar o Media Queries.
