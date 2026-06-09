@@ -53,7 +53,7 @@ function UserActions() {
                     <a href="#" className="settings-link">
                         <i className="bi bi-gear"></i> Configurações
                     </a>
-                    <a href="index1.html">
+                    <a href="index.html">
                         <i className="bi bi-box-arrow-left"></i> Sair
                     </a>
                     <button onClick={handleFecharDropdown} className="close-dropdown">
